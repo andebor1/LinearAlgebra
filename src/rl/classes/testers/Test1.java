@@ -3,9 +3,11 @@ package rl.classes.testers;
 import rl.classes.matrices.*;
 import rl.classes.types.*;
 
+import java.util.Arrays;
+
 public class Test1 {
     public static void main(String[] args) {
-        A8Q2();
+        System.out.println(Arrays.toString(Matrix.unit(3).sub(Matrix.unit(3)).nullSpaceBase()));
     }
 
     public static void A8Q1() {

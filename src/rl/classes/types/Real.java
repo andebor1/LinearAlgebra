@@ -1,71 +1,53 @@
-package rl.classes.types;
+public class Real  implements Field<Double> {
+    public static final double unit = 1;
+    public static final double zero = 0;
 
-public class Real implements Field {
-    public static final Field unit = new Real(1);
-    public static final Field zero = new Real(0);
-
-    private double value;
-
-    public Real(double num) {
-        value = num;
-    }
-
-    public Field unit() {
+    public double unit() {
         return unit;
     }
 
-    public Field zero() {
+    public double zero() {
         return zero;
     }
 
+    private double value;
+
+    public Real(double value) {
+        this.value = value;
+    }
     @Override
-    public boolean equals(Field other) {
-        if (other instanceof Real otherReal) {
-            return this.value == otherReal.value;
-        }
-        return false;
+    public boolean isEqual(Double other) {
+        return this.value == other;
     }
 
     @Override
-    public Field add(Field other) {
-        if (other instanceof Real otherReal) {
-            return new Real(this.value + otherReal.value);
-        }
-        return null; // or throw an exception to indicate unsupported operation
+    public Double add(Double other) {
+        return this.value + other;
     }
 
     @Override
-    public Field sub(Field other) {
-        if (other instanceof Real otherReal) {
-            return new Real(this.value - otherReal.value);
-        }
-        return null; // or throw an exception to indicate unsupported operation
+    public Double sub(Double other) {
+        return this.value + other;
     }
 
     @Override
-    public Field mul(Field other) {
-        if (other instanceof Real otherReal) {
-            return new Real(this.value * otherReal.value);
-        }
-        return null; // or throw an exception to indicate unsupported operation
+    public Double mul(Double other) {
+        return this.value*other;
     }
 
     @Override
-    public Field inverse() {
-        if (value != 0) {
-            return new Real(1 / this.value);
-        }
-        return null; // or throw an exception to indicate unsupported operation
+    public Double inverse() {
+        return 1/this.value;
     }
 
     @Override
-    public Field neg() {
-        return new Real(-this.value);
+    public Double neg() {
+        return -this.value;
     }
 
     @Override
     public boolean isZero() {
-        return value == 0;
+        return this.value == 0;
     }
 
     public String toString() {

@@ -5,7 +5,7 @@ import rl.classes.matrices.Matrix;
 import java.util.Arrays;
 
 public class Vector {
-    private double[] vec;
+    public final double[] vec;
     public final int len;
 
     public Vector(double... elements) {
@@ -63,5 +63,15 @@ public class Vector {
         }
 
         return new Matrix(mat);
+    }
+
+    public boolean isZero() {
+        for (double val : vec) {
+            if (val != 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

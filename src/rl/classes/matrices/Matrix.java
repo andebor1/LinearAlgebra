@@ -3,6 +3,7 @@ package rl.classes.matrices;
 import rl.classes.types.Vector;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class Matrix {
 
@@ -50,7 +51,7 @@ public class Matrix {
         StringBuilder out = new StringBuilder();
 
         for (int i=1; i<=rows; i++) {
-            out.append(Arrays.toString(getRow(i)));
+            out.append(getRow(i));
             out.append("\n");
         }
 
@@ -61,7 +62,7 @@ public class Matrix {
         double[][] res = new double[rows][];
 
         for (int i=0; i<rows; i++) {
-            res[i] = getRow(i+1);
+            res[i] = getRow(i+1).vec;
         }
 
         return res;
@@ -146,14 +147,14 @@ public class Matrix {
      *
      * @post $ret.equals(this.mat[i-1])
      */
-    public double[] getRow(int i) {
+    public Vector getRow(int i) {
         double[] row = new double[this.columns];
 
         for (int j=0; j<this.columns; j++) {
             row[j] = this.mat[i - 1][j];
         }
 
-        return row;
+        return new Vector(row);
     }
 
     /**
@@ -162,14 +163,14 @@ public class Matrix {
      *
      * @post $ret[i] == this.mat[i][j - 1] for all 0<=i<this.rows
      */
-    public double[] getCol(int j) {
+    public Vector getCol(int j) {
         double[] col = new double[this.rows];
 
         for (int i=0; i<this.rows; i++) {
             col[i] = this.mat[i][j - 1];
         }
 
-        return col;
+        return new Vector(col);
     }
 
     /**
@@ -183,7 +184,7 @@ public class Matrix {
 
         for (int i=0; i<this.rows; i++) {
             for (int j=0; j<B.columns; j++) {
-                newMat[i][j] = Vector.dot(this.mat[i], B.getCol(j + 1));
+                newMat[i][j] = B.getCol(j + 1).dot(this.mat[i]);
             }
         }
 
@@ -428,7 +429,7 @@ public class Matrix {
         Vector[] vectors = new Vector[this.columns];
 
         for (int i=0; i<this.columns; i++) {
-            vectors[i] = new Vector(this.getCol(i + 1));
+            vectors[i] = this.getCol(i + 1);
         }
 
         return vectors;
@@ -478,5 +479,57 @@ public class Matrix {
         }
 
         return new Matrix(newMat);
+    }
+
+    public int getRank() {
+        Matrix eliminated = this.gaussElimination();
+
+        int rank = 0;
+        for (int i=0; i<rows; i++, rank++) {
+            if (eliminated.getRow(i + 1).isZero()) {
+                break;
+            }
+        }
+
+        return rank;
+    }
+
+    public Vector[] nullSpaceBase() {
+        int n = rows;
+        Matrix eliminated = this.gaussElimination();
+
+        int r = eliminated.getRank();
+        HashSet<Integer> pivotIndexes = new HashSet<>();
+
+        for (int i=0; i<r; i++) {
+            double[] row = eliminated.getRow(i + 1).vec;
+            for (int j=0; j<n; j++) {
+                if (row[j] == 1) {
+                    pivotIndexes.add(j);
+                }
+            }
+        }
+
+        Vector[] base = new Vector[n - r];
+        int curr=0;
+        for (int i=0; i<n-r; i++, curr++) {
+            while (pivotIndexes.contains(curr)) {
+                curr++;
+            }
+
+            double[] baseVector = new double[n];
+            baseVector[curr] = 1;
+            for (int j=0; j<curr; j++) {
+                if (pivotIndexes.contains(j)) {
+                    baseVector[j] = -this.mat[j][curr];
+                } else {
+                    baseVector[j] = 0;
+                }
+            }
+
+            base[i] = new Vector(baseVector);
+        }
+
+        return base;
     }
 }

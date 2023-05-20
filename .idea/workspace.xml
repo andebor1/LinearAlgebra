@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/matrices/GMatrix.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/Field.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/GVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/Real.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/Vector.java" afterDir="false" />
+    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="commit before trying to get the field thing to work.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/GMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/GMatrix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Field.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/Field.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Real.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/Real.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/Vector.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +40,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/Dell/Desktop/projects/odyssey/year_2/software1/software1-workspace/hw_6-andebor1/partsA-C"
+    "last_opened_file_path": "C:/Users/Dell/Desktop/projects/java/IntelliJ-workspace/LinearAlgebra/src/rl/classes/types/Real.java",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.excludes"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -59,6 +58,18 @@
       <option name="presentableId" value="Default" />
       <updated>1684224545405</updated>
     </task>
+    <task id="LOCAL‎-00001" summary="commit before trying to get the field thing to work.">
+      <created>1684611735965</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL‎-00001" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1684611735965</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit before trying to get the field thing to work." />
+    <option name="LAST_COMMIT_MESSAGE" value="commit before trying to get the field thing to work." />
   </component>
 </project>

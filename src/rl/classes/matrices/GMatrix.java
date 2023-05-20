@@ -5,12 +5,12 @@ import rl.classes.types.*;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
-public class GMatrix<T extends Field> {
-    private Field[][] mat;
+public class GMatrix<T extends Field<T>> {
+    private T[][] mat;
     public final int rows;
     public final int columns;
 
-    public GMatrix(Field[][] mat) {
+    public GMatrix(T[][] mat) {
         this.mat = mat;
         this.rows = mat.length;
 

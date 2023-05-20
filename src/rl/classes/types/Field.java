@@ -1,14 +1,12 @@
 package rl.classes.types;
 
-public interface Field {
-    Field unit = null;
-    Field zero = null;
-    boolean equals(Field other);
-    Field add(Field other);
-    Field sub(Field other);
-    Field mul(Field other);
-    Field inverse();
-    Field neg();
+public interface Field<T> {
+    boolean isEqual(T other);
+    T add(T other);
+    T sub(T other);
+    T mul(T other);
+    T inverse();
+    T neg();
     boolean isZero();
 
 }
