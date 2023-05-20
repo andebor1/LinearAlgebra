@@ -1,16 +1,16 @@
 package rl.classes.matrices;
 
-import rl.classes.types.Vector;
+import rl.classes.types.*;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
-public class Matrix {
-
-    private double[][] mat;
+public class GMatrix<T extends Field> {
+    private Field[][] mat;
     public final int rows;
     public final int columns;
 
-    public Matrix(double[][] mat) {
+    public GMatrix(Field[][] mat) {
         this.mat = mat;
         this.rows = mat.length;
 
@@ -20,20 +20,35 @@ public class Matrix {
             this.columns = 0;
     }
 
-    public static Matrix unit(int n) {
-        double[][] newMat = new double[n][n];
+    public static GMatrix<Real> getMatrix(double[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        Real[][] newMat = new Real[m][n];
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                newMat[i][j] = new Real(mat[i][j]);
+            }
+        }
+
+        return new GMatrix<Real>(newMat);
+    }
+
+    public static <S extends Field> GMatrix unit(int n) {
+        System.out.println();
+        Field[][] newMat = new Field[n][n];
 
         for (int i=0; i<n; i++) {
             for (int j=0; j<n; j++) {
                 if (i==j) {
-                    newMat[i][j] = 1;
+                    newMat[i][j] = S.unit;
+                    System.out.println(newMat[i][j] + "" + S.unit);
                 } else {
-                    newMat[i][j] = 0;
+                    newMat[i][j] = S.zero;
                 }
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<S>(newMat);
     }
 
     /**
@@ -57,8 +72,8 @@ public class Matrix {
         return out.toString();
     }
 
-    public double[][] getMat() {
-        double[][] res = new double[rows][];
+    public Field[][] getMat() {
+        Field[][] res = new Field[rows][];
 
         for (int i=0; i<rows; i++) {
             res[i] = getRow(i+1);
@@ -68,18 +83,18 @@ public class Matrix {
     }
 
 
-    public Matrix copy() {
-        return new Matrix(this.getMat());
+    public GMatrix<T> copy() {
+        return new GMatrix<T>(this.getMat());
     }
 
-    public boolean equals(Matrix B) {
+    public boolean equals(GMatrix<T> B) {
         if (!Arrays.equals(this.size(), B.size())) {
             return false;
         }
 
         for (int i=0; i<this.rows; i++) {
             for (int j=0; j<this.columns; j++) {
-                if (this.mat[i][j] != B.mat[i][j]) {
+                if (this.mat[i][j].equals(B.mat[i][j])) {
                     return false;
                 }
             }
@@ -94,16 +109,16 @@ public class Matrix {
      *
      * @post $ret.mat[i][j] == this.mat[i][j] + B.mat[i][j] for all i, j
      */
-    public Matrix add(Matrix B) {
-        double[][] newMat = new double[rows][columns];
+    public GMatrix<T> add(GMatrix<T> B) {
+        Field[][] newMat = new Field[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
-                newMat[i][j] = mat[i][j] + B.mat[i][j];
+                newMat[i][j] = mat[i][j].add(B.mat[i][j]);
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 
     /**
@@ -112,32 +127,32 @@ public class Matrix {
      *
      * @post $ret.mat[i][j] == this.mat[i][j] - B.mat[i][j] for all i, j
      */
-    public Matrix sub(Matrix B) {
-        double[][] newMat = new double[rows][columns];
+    public GMatrix<T> sub(GMatrix<T> B) {
+        Field[][] newMat = new Field[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
-                newMat[i][j] = mat[i][j] - B.mat[i][j];
+                newMat[i][j] = mat[i][j].sub(B.mat[i][j]);
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 
     /**
      *
      * @post $ret.mat[i][j] == c*this.mat[i][j] for all i,j
      */
-    public Matrix scalarMul(double c) {
-        double[][] newMat = new double[rows][columns];
+    public GMatrix<T> scalarMul(T c) {
+        Field[][] newMat = new Field[rows][columns];
 
         for (int i = 0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
-                newMat[i][j] = c*mat[i][j];
+                newMat[i][j] = c.mul(mat[i][j]);
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 
     /**
@@ -146,8 +161,8 @@ public class Matrix {
      *
      * @post $ret.equals(this.mat[i-1])
      */
-    public double[] getRow(int i) {
-        double[] row = new double[this.columns];
+    public Field[] getRow(int i) {
+        Field[] row = new Field[this.columns];
 
         for (int j=0; j<this.columns; j++) {
             row[j] = this.mat[i - 1][j];
@@ -162,8 +177,8 @@ public class Matrix {
      *
      * @post $ret[i] == this.mat[i][j - 1] for all 0<=i<this.rows
      */
-    public double[] getCol(int j) {
-        double[] col = new double[this.rows];
+    public Field[] getCol(int j) {
+        Field[] col = new Field[this.rows];
 
         for (int i=0; i<this.rows; i++) {
             col[i] = this.mat[i][j - 1];
@@ -178,46 +193,30 @@ public class Matrix {
      *
      * @post $ret = this.mat * B.mat (matrix multiplication)
      */
-    public Matrix multiply(Matrix B) {
-        double[][] newMat = new double[this.rows][B.columns];
+    public GMatrix<T> multiply(GMatrix<T> B) {
+        Field[][] newMat = new Field[this.rows][B.columns];
 
         for (int i=0; i<this.rows; i++) {
             for (int j=0; j<B.columns; j++) {
-                newMat[i][j] = Vector.dot(this.mat[i], B.getCol(j + 1));
+                newMat[i][j] = GVector.<T>dot(this.mat[i], B.getCol(j + 1));
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 
-    /**
-     *
-     * @pre this.rows == this.columns
-     *
-     * @post $ret == this to the power of k
-     */
-    public Matrix pow(int k) {
-        Matrix newMatrix = Matrix.unit(this.rows);
-
-        for (int i=0; i<k; i++) {
-            newMatrix = newMatrix.multiply(this);
-        }
-
-        return newMatrix;
-    }
-
-    public Vector mulVec(Vector v) {
-        double[] newVec = new double[this.rows];
+    public GVector<T> mulVec(GVector<T> v) {
+        Field[] newVec = new Field[this.rows];
 
         for (int i=0; i<rows;i++) {
             newVec[i] = v.dot(this.mat[i]);
         }
 
-        return new Vector(newVec);
+        return new GVector<T>(newVec);
     }
 
-    public Vector mulVec(double... vec) {
-        Vector v = new Vector(vec);
+    public GVector<T> mulVec(Field... vec) {
+        GVector<T> v = new GVector<T>(vec);
         return this.mulVec(v);
     }
 
@@ -225,8 +224,8 @@ public class Matrix {
      *
      * @post $ret.mat[j][i] = this.mat[i][j] for all i, j
      */
-    public Matrix transpose() {
-        double[][] newMat = new double[columns][rows];
+    public GMatrix<T> transpose() {
+        Field[][] newMat = new Field[columns][rows];
 
         for (int j=0; j<columns; j++) {
             for (int i=0; i<rows; i++) {
@@ -234,7 +233,7 @@ public class Matrix {
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 
     /**
@@ -243,8 +242,8 @@ public class Matrix {
      *
      * replaces rows l-1, k-1
      */
-    public Matrix P(int k, int l) {
-        double[][] newMat = new double[rows][columns];
+    public GMatrix<T> P(int k, int l) {
+        Field[][] newMat = new Field[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -258,7 +257,7 @@ public class Matrix {
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 
     /**
@@ -268,20 +267,20 @@ public class Matrix {
      * @post for all j for all 0<=i<this.rows: i == k @implies $ret.mat[i][j] == a*this.mat[i][j]
      *                                          else: $ret.mat[i][j] == this.mat[i][j]
      */
-    public Matrix PM(int k, double a) {
-        double[][] newMat = new double[rows][columns];
+    public GMatrix<T> PM(int k, T a) {
+        Field[][] newMat = new Field[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
                 if (i == k-1) {
-                    newMat[i][j] = a*mat[i][j];
+                    newMat[i][j] = a.mul(mat[i][j]);
                 } else {
                     newMat[i][j] = mat[i][j];
                 }
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 
     /**
@@ -290,20 +289,20 @@ public class Matrix {
      * @post for all j for all 0<=i<this.rows: i == k-1 @implies $ret.mat[i][j] == this.mat[i][j] + a*this.mat[l-1][j]
      *                                          else: $ret.mat[i][j] == a*this.mat[i][j]
      */
-    public Matrix PA(int l, int k, double a) {
-        double[][] newMat = new double[rows][columns];
+    public GMatrix<T> PA(int l, int k, T a) {
+        Field[][] newMat = new Field[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
                 if (i == k-1) {
-                    newMat[i][j] = mat[i][j] + a*mat[l-1][j];
+                    newMat[i][j] = mat[i][j].add(a.mul(mat[l-1][j]));
                 } else {
                     newMat[i][j] = mat[i][j];
                 }
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 
     /**
@@ -312,7 +311,7 @@ public class Matrix {
      * replaces rows l, k
      */
     private void _P(int k, int l) {
-        double[] tmp = this.mat[k];
+        Field[] tmp = this.mat[k];
         this.mat[k] = this.mat[l];
         this.mat[l] = tmp;
     }
@@ -324,9 +323,9 @@ public class Matrix {
      * @post for all j for all 0<=i<this.rows: i == k @implies this.mat[i][j] == a*($post)this.mat[i][j]
      *                                          else: this.mat[i][j] == ($post)this.mat[i][j]
      */
-    private void _PM(int k, double a) {
+    private void _PM(int k, Field a) {
         for (int j=0; j<columns; j++) {
-            this.mat[k][j] = a*this.mat[k][j];
+            this.mat[k][j] = a.mul(this.mat[k][j]);
         }
     }
 
@@ -337,9 +336,9 @@ public class Matrix {
      * @post for all j for all 0<=i<this.rows: i == k @implies $ret.mat[i][j] == this.mat[i][j] + a*this.mat[l][j]
      *                                          else: $ret.mat[i][j] == a*this.mat[i][j]
      */
-    private void _PA(int l, int k, double a) {
+    private void _PA(int l, int k, Field a) {
         for (int j=0; j<columns; j++) {
-            this.mat[k][j] = this.mat[k][j] + a*this.mat[l][j];
+            this.mat[k][j] = this.mat[k][j].add(a.mul(this.mat[l][j]));
         }
     }
 
@@ -349,19 +348,8 @@ public class Matrix {
      * @post $ret < 0 @implies this.mat[$ret][j] != 0
      */
     private int nonZeroIndexInColumn(int from, int j) {
-        return nonZeroIndexInColumn(from, j, false);
-    }
-
-    /**
-     *
-     * @post $ret == -1 @implies for all i, Math.abs(this.mat[j][i]) < e
-     * @post $ret < 0 @implies Math.abs(this.mat[$ret][j]) > e
-     */
-    private int nonZeroIndexInColumn(int from, int j, boolean approx) {
-        double e = 0.000001;
-
         for (int i=from; i<rows; i++) {
-            if (Math.abs(this.mat[i][j]) > e) {
+            if (this.mat[i][j].isZero()) {
                 return i;
             }
         }
@@ -377,30 +365,26 @@ public class Matrix {
         this.selfGaussElimination(endCol, false);
     }
 
-    private void selfGaussElimination(int endCol, boolean approx) {
-        this.selfGaussElimination(endCol, approx, false);
-    }
-
-    private double selfGaussElimination(int endCol, boolean approx, boolean calcDet) {
+    private Field selfGaussElimination(int endCol, boolean calcDet) {
         int currRow = 0;
-        double det = 1;
+        Field det = T.unit;
         for (int j=0; j<endCol; j++) {
-            int row = nonZeroIndexInColumn(currRow, j, approx);
+            int row = nonZeroIndexInColumn(currRow, j);
             if (row == -1) continue;
 
             this._P(currRow, row);
 
             if (calcDet) {
-                det *= row == currRow ? 1 : -1;
-                det *= this.mat[currRow][j];
+                det = det.mul(row == currRow ? T.unit : T.unit.neg());
+                det = det.mul(this.mat[currRow][j]);
             }
 
-            this._PM(currRow, 1/this.mat[currRow][j]);
+            this._PM(currRow, this.mat[currRow][j].inverse());
 
             for (int i=0; i<rows; i++) {
                 if (i == currRow) continue;
 
-                double c = - this.mat[i][j];
+                Field c = this.mat[i][j].neg();
                 this._PA(currRow, i, c);
             }
             currRow++;
@@ -409,26 +393,26 @@ public class Matrix {
         return det;
     }
 
-    public Matrix gaussElimination() {
+    public GMatrix<T> gaussElimination() {
         return gaussElimination(this.columns + 1);
     }
 
-    public Matrix gaussElimination(int endCol) {
-        Matrix newMatrix = this.copy();
+    public GMatrix<T> gaussElimination(int endCol) {
+        GMatrix<T> newMatrix = this.copy();
         newMatrix.selfGaussElimination(endCol - 1);
         return newMatrix;
     }
 
-    public double det() {
-        Matrix copy = this.copy();
-        return copy.selfGaussElimination(columns, true, true);
+    public Field det() {
+        GMatrix<T> copy = this.copy();
+        return copy.selfGaussElimination(columns, true);
     }
 
-    public Vector[] getVectors() {
-        Vector[] vectors = new Vector[this.columns];
+    public GVector<T>[] getVectors() {
+        GVector<T>[] vectors = (GVector<T>[]) new GVector<?>[this.columns];
 
         for (int i=0; i<this.columns; i++) {
-            vectors[i] = new Vector(this.getCol(i + 1));
+            vectors[i] = new GVector<T>(this.getCol(i + 1));
         }
 
         return vectors;
@@ -441,11 +425,11 @@ public class Matrix {
      * @post this.det == 0 @implies $ret == this
      * @post this.det != 0 @implies this.multiply($ret).equals(Matrix.unit(this.rows))
      */
-    public Matrix inverse() {
-        Vector[] thisVectors = this.getVectors();
-        Vector[] unitVectors = Matrix.unit(this.rows).getVectors();
+    public GMatrix<T> inverse() {
+        GVector<T>[] thisVectors = this.getVectors();
+        GVector<T>[] unitVectors = GMatrix.<T>unit(this.rows).getVectors();
 
-        Vector[] vectors = new Vector[this.rows*2];
+        GVector<T>[] vectors = (GVector<T>[]) new GVector<?>[this.rows*2];
 
         for (int i=0; i<2*rows; i++) {
             if (i<rows)
@@ -454,19 +438,19 @@ public class Matrix {
                 vectors[i] = unitVectors[i - rows];
         }
 
-        Matrix toEliminate = Vector.toMatrix(vectors);
+        GMatrix<T> toEliminate = GVector.<T>toMatrix(vectors);
 
-        if (toEliminate.selfGaussElimination(rows, false, true) == 0)
+        if (toEliminate.selfGaussElimination(rows - 1, true).isZero())
             return this;
 
-        Vector[] newVectors = toEliminate.getVectors();
-        Vector[] inverseVectors = Arrays.copyOfRange(newVectors, rows, 2*rows);
+        GVector<T>[] newVectors = toEliminate.getVectors();
+        GVector<T>[] inverseVectors = Arrays.copyOfRange(newVectors, rows, 2*rows);
 
-        return Vector.toMatrix(inverseVectors);
+        return GVector.<T>toMatrix(inverseVectors);
     }
 
-    public Matrix minor(int k, int l) {
-        double[][] newMat = new double[rows - 1][columns - 1];
+    public GMatrix<T> minor(int k, int l) {
+        Field[][] newMat = new Field[rows - 1][columns - 1];
 
         for (int i=0; i<rows - 1; i++) {
             for (int j=0; j<columns - 1; j++) {
@@ -477,6 +461,6 @@ public class Matrix {
             }
         }
 
-        return new Matrix(newMat);
+        return new GMatrix<T>(newMat);
     }
 }
