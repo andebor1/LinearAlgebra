@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class Test1 {
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(Matrix.unit(3).sub(Matrix.unit(3)).nullSpaceBase()));
+        System.out.println(new Rational(-2, -4));
     }
 
     public static void A8Q1() {

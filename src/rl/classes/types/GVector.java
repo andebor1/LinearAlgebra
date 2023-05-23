@@ -5,11 +5,12 @@ import rl.classes.matrices.Matrix;
 
 import java.util.Arrays;
 
-public class GVector<T extends Field> {
-    private Field[] vec;
+public class GVector<T extends Field2> {
+    private final T[] vec;
     public final int len;
 
-    public GVector(Field... elements) {
+    @SafeVarargs
+    public GVector(T... elements) {
         len = elements.length;
         this.vec = Arrays.copyOf(elements, len);
     }
@@ -31,10 +32,10 @@ public class GVector<T extends Field> {
      *
      * @post $ret == v1*v2 (dot product)
      */
-    public static <S extends Field> Field dot(Field[] v1, Field[] v2) {
+    public static <S extends Field2<S>> S dot(S[] v1, S[] v2) {
         int n = v1.length;
 
-        Field res = S.zero;
+        S res = v1[0].zero();
 
         for (int i=0; i<n; i++) {
             res = res.add(v1[i].mul(v2[i]));
@@ -43,20 +44,21 @@ public class GVector<T extends Field> {
         return res;
     }
 
-    public Field dot(GVector<T> v2) {
-        return dot(this.vec, v2.vec);
+    public T dot(GVector<T> v2) {
+        return GVector.<T>dot(this.vec, v2.vec);
     }
 
-    public Field dot(Field... v2) {
-        return dot(this.vec, v2);
+    public T dot(T... v2) {
+        return GVector.<T>dot(this.vec, v2);
     }
 
-    public static <S extends Field> GMatrix<S> toMatrix(GVector<S>... vectors) {
+    @SafeVarargs
+    public static <S extends Field2<S>> S toMatrix(GVector<S>... vectors) {
         int n = vectors.length;
-        if (n == 0) return new GMatrix<S>(new Field[][] {});
+        if (n == 0) return new GMatrix<S>(new S[][] {});
 
         int m = vectors[0].len;
-        Field[][] mat = new Field[m][n];
+        S[][] mat = new S[m][n];
         for (int i=0; i<m; i++) {
             for (int j=0; j<n; j++) {
                 mat[i][j] = vectors[j].vec[i];
