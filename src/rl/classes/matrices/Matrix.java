@@ -1,13 +1,13 @@
 package rl.classes.matrices;
 
-import rl.classes.types.Vector;
+import rl.classes.vectors.Vector;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
 public class Matrix {
 
-    private double[][] mat;
+    private final double[][] mat;
     public final int rows;
     public final int columns;
 
@@ -506,6 +506,7 @@ public class Matrix {
             for (int j=0; j<n; j++) {
                 if (row[j] == 1) {
                     pivotIndexes.add(j);
+                    break;
                 }
             }
         }

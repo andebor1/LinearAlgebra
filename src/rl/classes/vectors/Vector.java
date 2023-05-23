@@ -1,16 +1,14 @@
-package rl.classes.types;
+package rl.classes.vectors;
 
-import rl.classes.matrices.GMatrix;
 import rl.classes.matrices.Matrix;
 
 import java.util.Arrays;
 
-public class GVector<T extends Field2> {
-    private final T[] vec;
+public class Vector {
+    public final double[] vec;
     public final int len;
 
-    @SafeVarargs
-    public GVector(T... elements) {
+    public Vector(double... elements) {
         len = elements.length;
         this.vec = Arrays.copyOf(elements, len);
     }
@@ -32,39 +30,48 @@ public class GVector<T extends Field2> {
      *
      * @post $ret == v1*v2 (dot product)
      */
-    public static <S extends Field2<S>> S dot(S[] v1, S[] v2) {
+    public static double dot(double[] v1, double[] v2) {
         int n = v1.length;
 
-        S res = v1[0].zero();
+        double res = 0;
 
         for (int i=0; i<n; i++) {
-            res = res.add(v1[i].mul(v2[i]));
+            res += v1[i]*v2[i];
         }
 
         return res;
     }
 
-    public T dot(GVector<T> v2) {
-        return GVector.<T>dot(this.vec, v2.vec);
+    public double dot(Vector v2) {
+        return dot(this.vec, v2.vec);
     }
 
-    public T dot(T... v2) {
-        return GVector.<T>dot(this.vec, v2);
+    public double dot(double... v2) {
+        return dot(this.vec, v2);
     }
 
-    @SafeVarargs
-    public static <S extends Field2<S>> S toMatrix(GVector<S>... vectors) {
+    public static Matrix toMatrix(Vector... vectors) {
         int n = vectors.length;
-        if (n == 0) return new GMatrix<S>(new S[][] {});
+        if (n == 0) return new Matrix(new double[][] {});
 
         int m = vectors[0].len;
-        S[][] mat = new S[m][n];
+        double[][] mat = new double[m][n];
         for (int i=0; i<m; i++) {
             for (int j=0; j<n; j++) {
                 mat[i][j] = vectors[j].vec[i];
             }
         }
 
-        return new GMatrix<S>(mat);
+        return new Matrix(mat);
+    }
+
+    public boolean isZero() {
+        for (double val : vec) {
+            if (val != 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

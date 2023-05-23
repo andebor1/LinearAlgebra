@@ -1,14 +1,15 @@
-package rl.classes.types;
+package rl.classes.vectors;
 
-import rl.classes.matrices.Matrix;
+import rl.classes.matrices.FMatrix;
+import rl.classes.types.FieldElement;
 
 import java.util.Arrays;
 
-public class Vector {
-    public final double[] vec;
+public class FVector {
+    public final FieldElement[] vec;
     public final int len;
 
-    public Vector(double... elements) {
+    public FVector(FieldElement... elements) {
         len = elements.length;
         this.vec = Arrays.copyOf(elements, len);
     }
@@ -30,44 +31,44 @@ public class Vector {
      *
      * @post $ret == v1*v2 (dot product)
      */
-    public static double dot(double[] v1, double[] v2) {
+    public static FieldElement dot(FieldElement[] v1, FieldElement[] v2) {
         int n = v1.length;
 
-        double res = 0;
+        FieldElement res = v1[0].mul(v2[0]);
 
-        for (int i=0; i<n; i++) {
-            res += v1[i]*v2[i];
+        for (int i=1; i<n; i++) {
+            res = res.add(v1[i].mul(v2[i]));
         }
 
         return res;
     }
 
-    public double dot(Vector v2) {
+    public FieldElement dot(FVector v2) {
         return dot(this.vec, v2.vec);
     }
 
-    public double dot(double... v2) {
+    public FieldElement dot(FieldElement... v2) {
         return dot(this.vec, v2);
     }
 
-    public static Matrix toMatrix(Vector... vectors) {
+    public static FMatrix toMatrix(FVector... vectors) {
         int n = vectors.length;
-        if (n == 0) return new Matrix(new double[][] {});
+        if (n == 0) return new FMatrix(new FieldElement[][] {});
 
         int m = vectors[0].len;
-        double[][] mat = new double[m][n];
+        FieldElement[][] mat = new FieldElement[m][n];
         for (int i=0; i<m; i++) {
             for (int j=0; j<n; j++) {
                 mat[i][j] = vectors[j].vec[i];
             }
         }
 
-        return new Matrix(mat);
+        return new FMatrix(mat);
     }
 
     public boolean isZero() {
-        for (double val : vec) {
-            if (val != 0) {
+        for (FieldElement val : vec) {
+            if (!val.isZero()) {
                 return false;
             }
         }

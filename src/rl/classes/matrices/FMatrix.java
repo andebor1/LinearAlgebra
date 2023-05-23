@@ -1,16 +1,19 @@
 package rl.classes.matrices;
 
-import rl.classes.types.*;
+import rl.classes.vectors.FVector;
+import rl.classes.types.FieldElement;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.HashSet;
 
-public class GMatrix<T extends Field<T>> {
-    private T[][] mat;
+public class FMatrix {
+
+    private final FieldElement[][] mat;
+    private final FieldElement unit;
     public final int rows;
     public final int columns;
 
-    public GMatrix(T[][] mat) {
+    public FMatrix(FieldElement[][] mat) {
         this.mat = mat;
         this.rows = mat.length;
 
@@ -18,37 +21,24 @@ public class GMatrix<T extends Field<T>> {
             this.columns = mat[0].length;
         else
             this.columns = 0;
+
+        this.unit = mat[0][0].unit();
     }
 
-    public static GMatrix<Real> getMatrix(double[][] mat) {
-        int m = mat.length;
-        int n = mat[0].length;
-        Real[][] newMat = new Real[m][n];
-        for (int i=0; i<m; i++) {
-            for (int j=0; j<n; j++) {
-                newMat[i][j] = new Real(mat[i][j]);
-            }
-        }
-
-        return new GMatrix<Real>(newMat);
-    }
-
-    public static <S extends Field> GMatrix unit(int n) {
-        System.out.println();
-        Field[][] newMat = new Field[n][n];
+    public static FMatrix unit(int n, FieldElement unit) {
+        FieldElement[][] newMat = new FieldElement[n][n];
 
         for (int i=0; i<n; i++) {
             for (int j=0; j<n; j++) {
                 if (i==j) {
-                    newMat[i][j] = S.unit;
-                    System.out.println(newMat[i][j] + "" + S.unit);
+                    newMat[i][j] = unit;
                 } else {
-                    newMat[i][j] = S.zero;
+                    newMat[i][j] = unit.zero();
                 }
             }
         }
 
-        return new GMatrix<S>(newMat);
+        return new FMatrix(newMat);
     }
 
     /**
@@ -65,36 +55,36 @@ public class GMatrix<T extends Field<T>> {
         StringBuilder out = new StringBuilder();
 
         for (int i=1; i<=rows; i++) {
-            out.append(Arrays.toString(getRow(i)));
+            out.append(Arrays.toString(getRow(i).vec));
             out.append("\n");
         }
 
         return out.toString();
     }
 
-    public Field[][] getMat() {
-        Field[][] res = new Field[rows][];
+    public FieldElement[][] getMat() {
+        FieldElement[][] res = new FieldElement[rows][];
 
         for (int i=0; i<rows; i++) {
-            res[i] = getRow(i+1);
+            res[i] = getRow(i+1).vec;
         }
 
         return res;
     }
 
 
-    public GMatrix<T> copy() {
-        return new GMatrix<T>(this.getMat());
+    public FMatrix copy() {
+        return new FMatrix(this.getMat());
     }
 
-    public boolean equals(GMatrix<T> B) {
+    public boolean equals(FMatrix B) {
         if (!Arrays.equals(this.size(), B.size())) {
             return false;
         }
 
         for (int i=0; i<this.rows; i++) {
             for (int j=0; j<this.columns; j++) {
-                if (this.mat[i][j].equals(B.mat[i][j])) {
+                if (this.mat[i][j] != B.mat[i][j]) {
                     return false;
                 }
             }
@@ -109,8 +99,8 @@ public class GMatrix<T extends Field<T>> {
      *
      * @post $ret.mat[i][j] == this.mat[i][j] + B.mat[i][j] for all i, j
      */
-    public GMatrix<T> add(GMatrix<T> B) {
-        Field[][] newMat = new Field[rows][columns];
+    public FMatrix add(FMatrix B) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -118,7 +108,7 @@ public class GMatrix<T extends Field<T>> {
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
     }
 
     /**
@@ -127,8 +117,8 @@ public class GMatrix<T extends Field<T>> {
      *
      * @post $ret.mat[i][j] == this.mat[i][j] - B.mat[i][j] for all i, j
      */
-    public GMatrix<T> sub(GMatrix<T> B) {
-        Field[][] newMat = new Field[rows][columns];
+    public FMatrix sub(FMatrix B) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -136,15 +126,15 @@ public class GMatrix<T extends Field<T>> {
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
     }
 
     /**
      *
      * @post $ret.mat[i][j] == c*this.mat[i][j] for all i,j
      */
-    public GMatrix<T> scalarMul(T c) {
-        Field[][] newMat = new Field[rows][columns];
+    public FMatrix scalarMul(FieldElement c) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i = 0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -152,7 +142,7 @@ public class GMatrix<T extends Field<T>> {
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
     }
 
     /**
@@ -161,14 +151,14 @@ public class GMatrix<T extends Field<T>> {
      *
      * @post $ret.equals(this.mat[i-1])
      */
-    public Field[] getRow(int i) {
-        Field[] row = new Field[this.columns];
+    public FVector getRow(int i) {
+        FieldElement[] row = new FieldElement[this.columns];
 
         for (int j=0; j<this.columns; j++) {
             row[j] = this.mat[i - 1][j];
         }
 
-        return row;
+        return new FVector(row);
     }
 
     /**
@@ -177,14 +167,14 @@ public class GMatrix<T extends Field<T>> {
      *
      * @post $ret[i] == this.mat[i][j - 1] for all 0<=i<this.rows
      */
-    public Field[] getCol(int j) {
-        Field[] col = new Field[this.rows];
+    public FVector getCol(int j) {
+        FieldElement[] col = new FieldElement[this.rows];
 
         for (int i=0; i<this.rows; i++) {
             col[i] = this.mat[i][j - 1];
         }
 
-        return col;
+        return new FVector(col);
     }
 
     /**
@@ -193,30 +183,46 @@ public class GMatrix<T extends Field<T>> {
      *
      * @post $ret = this.mat * B.mat (matrix multiplication)
      */
-    public GMatrix<T> multiply(GMatrix<T> B) {
-        Field[][] newMat = new Field[this.rows][B.columns];
+    public FMatrix multiply(FMatrix B) {
+        FieldElement[][] newMat = new FieldElement[this.rows][B.columns];
 
         for (int i=0; i<this.rows; i++) {
             for (int j=0; j<B.columns; j++) {
-                newMat[i][j] = GVector.<T>dot(this.mat[i], B.getCol(j + 1));
+                newMat[i][j] = B.getCol(j + 1).dot(this.mat[i]);
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
     }
 
-    public GVector<T> mulVec(GVector<T> v) {
-        Field[] newVec = new Field[this.rows];
+    /**
+     *
+     * @pre this.rows == this.columns
+     *
+     * @post $ret == this to the power of k
+     */
+    public FMatrix pow(int k) {
+        FMatrix newMatrix = FMatrix.unit(this.rows, this.unit);
+
+        for (int i=0; i<k; i++) {
+            newMatrix = newMatrix.multiply(this);
+        }
+
+        return newMatrix;
+    }
+
+    public FVector mulVec(FVector v) {
+        FieldElement[] newVec = new FieldElement[this.rows];
 
         for (int i=0; i<rows;i++) {
             newVec[i] = v.dot(this.mat[i]);
         }
 
-        return new GVector<T>(newVec);
+        return new FVector(newVec);
     }
 
-    public GVector<T> mulVec(Field... vec) {
-        GVector<T> v = new GVector<T>(vec);
+    public FVector mulVec(FieldElement... vec) {
+        FVector v = new FVector(vec);
         return this.mulVec(v);
     }
 
@@ -224,8 +230,8 @@ public class GMatrix<T extends Field<T>> {
      *
      * @post $ret.mat[j][i] = this.mat[i][j] for all i, j
      */
-    public GMatrix<T> transpose() {
-        Field[][] newMat = new Field[columns][rows];
+    public FMatrix transpose() {
+        FieldElement[][] newMat = new FieldElement[columns][rows];
 
         for (int j=0; j<columns; j++) {
             for (int i=0; i<rows; i++) {
@@ -233,7 +239,7 @@ public class GMatrix<T extends Field<T>> {
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
     }
 
     /**
@@ -242,8 +248,8 @@ public class GMatrix<T extends Field<T>> {
      *
      * replaces rows l-1, k-1
      */
-    public GMatrix<T> P(int k, int l) {
-        Field[][] newMat = new Field[rows][columns];
+    public FMatrix P(int k, int l) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -257,7 +263,7 @@ public class GMatrix<T extends Field<T>> {
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
     }
 
     /**
@@ -267,8 +273,8 @@ public class GMatrix<T extends Field<T>> {
      * @post for all j for all 0<=i<this.rows: i == k @implies $ret.mat[i][j] == a*this.mat[i][j]
      *                                          else: $ret.mat[i][j] == this.mat[i][j]
      */
-    public GMatrix<T> PM(int k, T a) {
-        Field[][] newMat = new Field[rows][columns];
+    public FMatrix PM(int k, FieldElement a) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -280,7 +286,7 @@ public class GMatrix<T extends Field<T>> {
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
     }
 
     /**
@@ -289,8 +295,8 @@ public class GMatrix<T extends Field<T>> {
      * @post for all j for all 0<=i<this.rows: i == k-1 @implies $ret.mat[i][j] == this.mat[i][j] + a*this.mat[l-1][j]
      *                                          else: $ret.mat[i][j] == a*this.mat[i][j]
      */
-    public GMatrix<T> PA(int l, int k, T a) {
-        Field[][] newMat = new Field[rows][columns];
+    public FMatrix PA(int l, int k, FieldElement a) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -302,7 +308,7 @@ public class GMatrix<T extends Field<T>> {
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
     }
 
     /**
@@ -311,7 +317,7 @@ public class GMatrix<T extends Field<T>> {
      * replaces rows l, k
      */
     private void _P(int k, int l) {
-        Field[] tmp = this.mat[k];
+        FieldElement[] tmp = this.mat[k];
         this.mat[k] = this.mat[l];
         this.mat[l] = tmp;
     }
@@ -323,7 +329,7 @@ public class GMatrix<T extends Field<T>> {
      * @post for all j for all 0<=i<this.rows: i == k @implies this.mat[i][j] == a*($post)this.mat[i][j]
      *                                          else: this.mat[i][j] == ($post)this.mat[i][j]
      */
-    private void _PM(int k, Field a) {
+    private void _PM(int k, FieldElement a) {
         for (int j=0; j<columns; j++) {
             this.mat[k][j] = a.mul(this.mat[k][j]);
         }
@@ -336,7 +342,7 @@ public class GMatrix<T extends Field<T>> {
      * @post for all j for all 0<=i<this.rows: i == k @implies $ret.mat[i][j] == this.mat[i][j] + a*this.mat[l][j]
      *                                          else: $ret.mat[i][j] == a*this.mat[i][j]
      */
-    private void _PA(int l, int k, Field a) {
+    private void _PA(int l, int k, FieldElement a) {
         for (int j=0; j<columns; j++) {
             this.mat[k][j] = this.mat[k][j].add(a.mul(this.mat[l][j]));
         }
@@ -349,7 +355,7 @@ public class GMatrix<T extends Field<T>> {
      */
     private int nonZeroIndexInColumn(int from, int j) {
         for (int i=from; i<rows; i++) {
-            if (this.mat[i][j].isZero()) {
+            if (!this.mat[i][j].isZero()) {
                 return i;
             }
         }
@@ -365,9 +371,9 @@ public class GMatrix<T extends Field<T>> {
         this.selfGaussElimination(endCol, false);
     }
 
-    private Field selfGaussElimination(int endCol, boolean calcDet) {
+    private FieldElement selfGaussElimination(int endCol, boolean calcDet) {
         int currRow = 0;
-        Field det = T.unit;
+        FieldElement det = unit;
         for (int j=0; j<endCol; j++) {
             int row = nonZeroIndexInColumn(currRow, j);
             if (row == -1) continue;
@@ -375,7 +381,7 @@ public class GMatrix<T extends Field<T>> {
             this._P(currRow, row);
 
             if (calcDet) {
-                det = det.mul(row == currRow ? T.unit : T.unit.neg());
+                det = det.mul(row == currRow ? unit : unit.neg());
                 det = det.mul(this.mat[currRow][j]);
             }
 
@@ -384,7 +390,7 @@ public class GMatrix<T extends Field<T>> {
             for (int i=0; i<rows; i++) {
                 if (i == currRow) continue;
 
-                Field c = this.mat[i][j].neg();
+                FieldElement c = this.mat[i][j].neg();
                 this._PA(currRow, i, c);
             }
             currRow++;
@@ -393,26 +399,26 @@ public class GMatrix<T extends Field<T>> {
         return det;
     }
 
-    public GMatrix<T> gaussElimination() {
+    public FMatrix gaussElimination() {
         return gaussElimination(this.columns + 1);
     }
 
-    public GMatrix<T> gaussElimination(int endCol) {
-        GMatrix<T> newMatrix = this.copy();
+    public FMatrix gaussElimination(int endCol) {
+        FMatrix newMatrix = this.copy();
         newMatrix.selfGaussElimination(endCol - 1);
         return newMatrix;
     }
 
-    public Field det() {
-        GMatrix<T> copy = this.copy();
+    public FieldElement det() {
+        FMatrix copy = this.copy();
         return copy.selfGaussElimination(columns, true);
     }
 
-    public GVector<T>[] getVectors() {
-        GVector<T>[] vectors = (GVector<T>[]) new GVector<?>[this.columns];
+    public FVector[] getVectors() {
+        FVector[] vectors = new FVector[this.columns];
 
         for (int i=0; i<this.columns; i++) {
-            vectors[i] = new GVector<T>(this.getCol(i + 1));
+            vectors[i] = this.getCol(i + 1);
         }
 
         return vectors;
@@ -425,11 +431,11 @@ public class GMatrix<T extends Field<T>> {
      * @post this.det == 0 @implies $ret == this
      * @post this.det != 0 @implies this.multiply($ret).equals(Matrix.unit(this.rows))
      */
-    public GMatrix<T> inverse() {
-        GVector<T>[] thisVectors = this.getVectors();
-        GVector<T>[] unitVectors = GMatrix.<T>unit(this.rows).getVectors();
+    public FMatrix inverse() {
+        FVector[] thisVectors = this.getVectors();
+        FVector[] unitVectors = FMatrix.unit(this.rows, unit).getVectors();
 
-        GVector<T>[] vectors = (GVector<T>[]) new GVector<?>[this.rows*2];
+        FVector[] vectors = new FVector[this.rows*2];
 
         for (int i=0; i<2*rows; i++) {
             if (i<rows)
@@ -438,19 +444,19 @@ public class GMatrix<T extends Field<T>> {
                 vectors[i] = unitVectors[i - rows];
         }
 
-        GMatrix<T> toEliminate = GVector.<T>toMatrix(vectors);
+        FMatrix toEliminate = FVector.toMatrix(vectors);
 
-        if (toEliminate.selfGaussElimination(rows - 1, true).isZero())
-            return this;
+        if (toEliminate.selfGaussElimination(rows, true).isZero())
+            return null;
 
-        GVector<T>[] newVectors = toEliminate.getVectors();
-        GVector<T>[] inverseVectors = Arrays.copyOfRange(newVectors, rows, 2*rows);
+        FVector[] newVectors = toEliminate.getVectors();
+        FVector[] inverseVectors = Arrays.copyOfRange(newVectors, rows, 2*rows);
 
-        return GVector.<T>toMatrix(inverseVectors);
+        return FVector.toMatrix(inverseVectors);
     }
 
-    public GMatrix<T> minor(int k, int l) {
-        Field[][] newMat = new Field[rows - 1][columns - 1];
+    public FMatrix minor(int k, int l) {
+        FieldElement[][] newMat = new FieldElement[rows - 1][columns - 1];
 
         for (int i=0; i<rows - 1; i++) {
             for (int j=0; j<columns - 1; j++) {
@@ -461,6 +467,59 @@ public class GMatrix<T extends Field<T>> {
             }
         }
 
-        return new GMatrix<T>(newMat);
+        return new FMatrix(newMat);
+    }
+
+    public int getRank() {
+        FMatrix eliminated = this.gaussElimination();
+
+        int rank = 0;
+        for (int i=0; i<rows; i++, rank++) {
+            if (eliminated.getRow(i + 1).isZero()) {
+                break;
+            }
+        }
+
+        return rank;
+    }
+
+    public FVector[] nullSpaceBase() {
+        int n = rows;
+        FMatrix eliminated = this.gaussElimination();
+
+        int r = eliminated.getRank();
+        HashSet<Integer> pivotIndexes = new HashSet<>();
+
+        for (int i=0; i<r; i++) {
+            FieldElement[] row = eliminated.getRow(i + 1).vec;
+            for (int j=0; j<n; j++) {
+                if (row[j].equals(unit)) {
+                    pivotIndexes.add(j);
+                    break;
+                }
+            }
+        }
+
+        FVector[] base = new FVector[n - r];
+        int curr=0;
+        for (int i=0; i<n-r; i++, curr++) {
+            while (pivotIndexes.contains(curr)) {
+                curr++;
+            }
+
+            FieldElement[] baseVector = new FieldElement[n];
+            baseVector[curr] = unit;
+            for (int j=0; j<curr; j++) {
+                if (pivotIndexes.contains(j)) {
+                    baseVector[j] = this.mat[j][curr].neg();
+                } else {
+                    baseVector[j] = unit.zero();
+                }
+            }
+
+            base[i] = new FVector(baseVector);
+        }
+
+        return base;
     }
 }

@@ -1,12 +1,14 @@
-public class Real  implements Field<Double> {
-    public static final double unit = 1;
-    public static final double zero = 0;
+package rl.classes.types;
 
-    public double unit() {
+public class Real implements FieldElement {
+    public static final Real zero = new Real(0);
+    public static final Real unit = new Real(1);
+
+    public Real unit() {
         return unit;
     }
 
-    public double zero() {
+    public Real zero() {
         return zero;
     }
 
@@ -15,42 +17,61 @@ public class Real  implements Field<Double> {
     public Real(double value) {
         this.value = value;
     }
-    @Override
-    public boolean isEqual(Double other) {
-        return this.value == other;
+
+    private Real getRealValue(FieldElement other) {
+        if (other instanceof Real a) {
+            return a;
+        }
+
+        throw new IllegalArgumentException("Function must get an instance of Real class");
     }
 
-    @Override
-    public Double add(Double other) {
-        return this.value + other;
+    public boolean equals(FieldElement otherF) {
+        Real other = getRealValue(otherF);
+        return this.value == other.value;
     }
 
-    @Override
-    public Double sub(Double other) {
-        return this.value + other;
+
+    public FieldElement add(FieldElement otherF) {
+        Real other = getRealValue(otherF);
+        return new Real(this.value + other.value);
     }
 
-    @Override
-    public Double mul(Double other) {
-        return this.value*other;
+
+    public FieldElement sub(FieldElement otherF) {
+        Real other = getRealValue(otherF);
+        return new Real(this.value - other.value);
     }
 
-    @Override
-    public Double inverse() {
-        return 1/this.value;
+    public FieldElement mul(FieldElement otherF) {
+        Real other = getRealValue(otherF);
+        return new Real(this.value * other.value);
     }
 
-    @Override
-    public Double neg() {
-        return -this.value;
+    public FieldElement inverse() {
+        return new Real(1/this.value);
     }
 
-    @Override
+    public FieldElement neg() {
+        return new Real(-this.value);
+    }
+
     public boolean isZero() {
         return this.value == 0;
     }
 
     public String toString() {
         return "" + this.value;
+    }
+
+    public static Real[] convertList(double ... elements) {
+        int n = elements.length;
+        Real[] r = new Real[n];
+
+        for (int i=0; i<n; i++) {
+            r[i] = new Real(elements[i]);
+        }
+
+        return r;
     }
 }

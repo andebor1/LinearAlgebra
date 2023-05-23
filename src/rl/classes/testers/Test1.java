@@ -2,13 +2,15 @@ package rl.classes.testers;
 
 import rl.classes.matrices.*;
 import rl.classes.types.*;
+import rl.classes.vectors.*;
 
 import java.util.Arrays;
 
 public class Test1 {
     public static void main(String[] args) {
-        System.out.println(new Rational(-2, -4));
+        testField();
     }
+
 
     public static void A8Q1() {
         Matrix A = new Matrix(new double[][] {{6, -9, 5, 4}, {7, -13, 8, 7}, {8, -17, 11, 8}, {1, -2, 1, 3}});
@@ -37,5 +39,15 @@ public class Test1 {
         Matrix J = new Matrix(new double[][] {{2, 0, 0, 0}, {1, 2, 0, 0}, {0, 0, -2, 0}, {0, 0, 1, -2}});
 
         System.out.println(A.pow(8));
+    }
+
+    private static void testField() {
+        FVector v1 = new FVector(Rational.convertList(20, 213, 3, 412));
+        FVector v2 = new FVector(Rational.convertList(7, 12, 34, 413));
+        FVector v3 = new FVector(Rational.convertList(8, -3, -134, 13));
+
+        FMatrix mat = FVector.toMatrix(v1, v2, v3, v1);
+
+        System.out.println(Arrays.toString(mat.nullSpaceBase()));
     }
 }
