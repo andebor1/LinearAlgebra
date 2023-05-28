@@ -1,7 +1,7 @@
 package rl.classes.vectors;
 
 import rl.classes.matrices.FMatrix;
-import rl.classes.types.FieldElement;
+import rl.classes.types.fields.FieldElement;
 
 import java.util.Arrays;
 

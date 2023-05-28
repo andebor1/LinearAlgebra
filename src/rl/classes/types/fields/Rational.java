@@ -1,4 +1,4 @@
-package rl.classes.types;
+package rl.classes.types.fields;
 
 import rl.useable.Numeric;
 public record Rational(int numerator, int denominator) implements FieldElement{

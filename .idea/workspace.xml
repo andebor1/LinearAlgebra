@@ -4,18 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="Going to delete the last implementations of GMatirx and GVectors and go for a simpler approach">
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/vectors/FVector.java" afterDir="false" />
+    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="FMatrix, FVector, FieldElement all working!! They generalize the matrix and vector to work with all fields. From now working with FMatrix.">
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/Polynomial.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/RationalPolynomial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/GMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/FieldElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/FieldElement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/GVector.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Rational.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/Rational.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Real.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/Real.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Real2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/vectors/Vector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/FieldElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/FieldElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Rational.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Rational.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Real.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Real.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/vectors/FVector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/vectors/FVector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/useable/Numeric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/useable/Numeric.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +53,15 @@
       <recent name="rl.classes.types" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="Test1" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="rl.classes.testers.Test1" />
+      <module name="LinearAlgebra" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -84,26 +92,53 @@
       <option name="project" value="LOCAL‎" />
       <updated>1684858117984</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL‎-00004" summary="FMatrix, FVector, FieldElement all working!! They generalize the matrix and vector to work with all fields. From now working with FMatrix.">
+      <created>1684861861942</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL‎-00004" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1684861861942</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit before trying to get the field thing to work." />
     <MESSAGE value="the field thing does not work. However, created function to get the base of null space." />
     <MESSAGE value="Going to delete the last implementations of GMatirx and GVectors and go for a simpler approach" />
-    <option name="LAST_COMMIT_MESSAGE" value="Going to delete the last implementations of GMatirx and GVectors and go for a simpler approach" />
+    <MESSAGE value="FMatrix, FVector, FieldElement all working!! They generalize the matrix and vector to work with all fields. From now working with FMatrix." />
+    <option name="LAST_COMMIT_MESSAGE" value="FMatrix, FVector, FieldElement all working!! They generalize the matrix and vector to work with all fields. From now working with FMatrix." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java</url>
-          <line>485</line>
-          <properties class="rl.classes.matrices.FMatrix" method="nullSpaceBase">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="1" />
+          <line>543</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

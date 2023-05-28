@@ -1,4 +1,4 @@
-package rl.classes.types;
+package rl.classes.types.fields;
 
 public class Real implements FieldElement {
     public static final Real zero = new Real(0);

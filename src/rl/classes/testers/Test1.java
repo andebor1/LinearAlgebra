@@ -1,7 +1,10 @@
 package rl.classes.testers;
 
 import rl.classes.matrices.*;
-import rl.classes.types.*;
+import rl.classes.types.Polynomial;
+import rl.classes.types.fields.Rational;
+import rl.classes.types.fields.RationalPolynomial;
+import rl.classes.types.fields.Real;
 import rl.classes.vectors.*;
 
 import java.util.Arrays;
@@ -48,6 +51,6 @@ public class Test1 {
 
         FMatrix mat = FVector.toMatrix(v1, v2, v3, v1);
 
-        System.out.println(Arrays.toString(mat.nullSpaceBase()));
+        System.out.println(mat.characteristicPolynomial());
     }
 }

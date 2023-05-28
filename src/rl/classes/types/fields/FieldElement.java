@@ -1,4 +1,4 @@
-package rl.classes.types;
+package rl.classes.types.fields;
 
 public interface FieldElement {
     FieldElement unit();

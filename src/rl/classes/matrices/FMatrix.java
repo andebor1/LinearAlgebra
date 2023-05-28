@@ -1,7 +1,9 @@
 package rl.classes.matrices;
 
+import rl.classes.types.Polynomial;
+import rl.classes.types.fields.RationalPolynomial;
 import rl.classes.vectors.FVector;
-import rl.classes.types.FieldElement;
+import rl.classes.types.fields.FieldElement;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -375,6 +377,7 @@ public class FMatrix {
         int currRow = 0;
         FieldElement det = unit;
         for (int j=0; j<endCol; j++) {
+            System.out.println(this);
             int row = nonZeroIndexInColumn(currRow, j);
             if (row == -1) continue;
 
@@ -521,5 +524,23 @@ public class FMatrix {
         }
 
         return base;
+    }
+
+    public RationalPolynomial characteristicPolynomial() {
+        FieldElement[][] mat = this.getMat();
+
+        int n = this.rows;
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n; j++) {
+                if (i == j) {
+                    mat[i][j] = new RationalPolynomial(new Polynomial(mat[i][j].neg(), unit));
+                } else {
+                    mat[i][j] = new RationalPolynomial(new Polynomial(mat[i][j]));
+                }
+            }
+        }
+
+        FMatrix polMatrix = new FMatrix(mat);
+        return (RationalPolynomial) polMatrix.det();
     }
 }
