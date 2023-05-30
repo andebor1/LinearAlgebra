@@ -1,28 +1,29 @@
 package rl.classes.types.fields;
 
 import rl.useable.Numeric;
-public record Rational(long numerator, long denominator) implements FieldElement{
 
-    public static final Rational unit = new Rational(1, 1);
-    public static final Rational zero = new Rational(0, 1);
+public record RationalInt(int numerator, int denominator) implements FieldElement{
 
-    public Rational(long numerator, long denominator) {
+    public static final RationalInt unit = new RationalInt(1, 1);
+    public static final RationalInt zero = new RationalInt(0, 1);
+
+    public RationalInt(int numerator, int denominator) {
         if (denominator == 0) {
             throw new IllegalArgumentException("Can't have zero in the denominator!");
         }
 
-        long q = Numeric.gcd(numerator, denominator);
+        int q = Numeric.gcd(numerator, denominator);
 
         this.numerator = numerator/q;
         this.denominator = denominator/q;
     }
 
-    public Rational(long r) {
+    public RationalInt(int r) {
         this(r, 1);
     }
 
-    private Rational getRationalValue(FieldElement other) {
-        if (other instanceof Rational a) {
+    private RationalInt getRationalValue(FieldElement other) {
+        if (other instanceof RationalInt a) {
             return a;
         }
 
@@ -42,8 +43,8 @@ public record Rational(long numerator, long denominator) implements FieldElement
 
     @Override
     public FieldElement add(FieldElement other) {
-        Rational rOther = getRationalValue(other);
-        return new Rational(this.numerator*rOther.denominator + rOther.numerator*this.denominator, this.denominator*rOther.denominator);
+        RationalInt rOther = getRationalValue(other);
+        return new RationalInt(this.numerator*rOther.denominator + rOther.numerator*this.denominator, this.denominator*rOther.denominator);
     }
 
     @Override
@@ -53,8 +54,8 @@ public record Rational(long numerator, long denominator) implements FieldElement
 
     @Override
     public FieldElement mul(FieldElement other) {
-        Rational rOther = getRationalValue(other);
-        return new Rational(this.numerator*rOther.numerator, this.denominator*rOther.denominator);
+        RationalInt rOther = getRationalValue(other);
+        return new RationalInt(this.numerator*rOther.numerator, this.denominator*rOther.denominator);
     }
 
     @Override
@@ -62,17 +63,17 @@ public record Rational(long numerator, long denominator) implements FieldElement
         if (this.numerator == 0) {
             return zero;
         }
-        return new Rational(this.denominator, this.numerator);
+        return new RationalInt(this.denominator, this.numerator);
     }
 
     @Override
     public FieldElement neg() {
-        return new Rational(-this.numerator, this.denominator);
+        return new RationalInt(-this.numerator, this.denominator);
     }
 
     @Override
     public boolean equals(FieldElement other) {
-        Rational rOther = getRationalValue(other);
+        RationalInt rOther = getRationalValue(other);
         return this.numerator == rOther.numerator && this.denominator == rOther.denominator;
     }
 
@@ -85,12 +86,12 @@ public record Rational(long numerator, long denominator) implements FieldElement
         return this.numerator + "/" + this.denominator;
     }
 
-    public static Rational[] convertList(long ... elements) {
+    public static RationalInt[] convertList(int ... elements) {
         int n = elements.length;
-        Rational[] arr = new Rational[n];
+        RationalInt[] arr = new RationalInt[n];
 
         for (int i=0; i<n; i++) {
-            arr[i] = new Rational(elements[i]);
+            arr[i] = new RationalInt(elements[i]);
         }
 
         return arr;

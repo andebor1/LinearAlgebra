@@ -3,42 +3,28 @@ package rl.useable;
 import rl.classes.types.Polynomial;
 import rl.classes.types.fields.FieldElement;
 
-import java.util.Arrays;
+public class PolyOperations implements FractionsOperations {
 
-public class Numeric {
-
-    public static int gcd(int m, int k) {
-        if (k < 0) {
-            return -gcd(m, -k);
-        }
-        if (m < 0) {
-            return gcd(-m, k);
-        }
-        if (k == 0) {
-            return m;
-        }
-        if (k > m) {
-            return gcd(k, m);
-        }
-
-        return gcd(k, m%k);
+    public boolean usable() {
+        return true;
     }
 
-    public static long gcd(long m, long k) {
-        if (k < 0) {
-            return -gcd(m, -k);
-        }
-        if (m < 0) {
-            return gcd(-m, k);
-        }
-        if (k == 0) {
-            return m;
-        }
-        if (k > m) {
-            return gcd(k, m);
+    public static Polynomial getValue(FieldElement element) {
+        if (element instanceof Polynomial p) {
+            return p;
         }
 
-        return gcd(k, m%k);
+        throw new IllegalArgumentException("can't accept not Polynomial");
+    }
+
+    @Override
+    public FieldElement gcd(FieldElement element1, FieldElement element2) {
+        return (FieldElement) polyGCD(getValue(element1), getValue(element2));
+    }
+
+    @Override
+    public FieldElement div(FieldElement element1, FieldElement element2) {
+        return (FieldElement) polyDiv(getValue(element1), getValue(element2));
     }
 
     public static Polynomial polyGCD(Polynomial p1, Polynomial p2) {
@@ -101,4 +87,6 @@ public class Numeric {
 
         return new Polynomial(resFactors);
     }
+
+
 }

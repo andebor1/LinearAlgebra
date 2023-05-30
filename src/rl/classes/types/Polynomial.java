@@ -154,4 +154,9 @@ public class Polynomial {
     public boolean isZero() {
         return this.degree == 0 && this.factors[0].isZero();
     }
+
+    public Polynomial normalize() {
+        FieldElement highInverse = this.getCoefficient(this.degree).inverse();
+        return this.mul(highInverse);
+    }
 }

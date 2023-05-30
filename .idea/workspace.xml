@@ -4,17 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="FMatrix, FVector, FieldElement all working!! They generalize the matrix and vector to work with all fields. From now working with FMatrix.">
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/Polynomial.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/RationalPolynomial.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="Polynomial, RationalPolynomial added. Tried to make polynomial operations like gcd, mod, div but doesn't work yet.">
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/testers/PolyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/GRational.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/RationalInt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/useable/EmptyOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/useable/FractionsOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/FieldElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/FieldElement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Rational.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Rational.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Real.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Real.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/vectors/FVector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/vectors/FVector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/Polynomial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/Polynomial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/Rational.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Rational.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/useable/Numeric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/useable/Numeric.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,11 +47,25 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="rl.classes.types.fields" />
       <recent name="rl.classes.matrices" />
       <recent name="rl.classes.types" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Test1">
+    <configuration name="PolyTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="rl.classes.testers.PolyTest" />
+      <module name="LinearAlgebra" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="rl.classes.testers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Test1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="rl.classes.testers.Test1" />
       <module name="LinearAlgebra" />
@@ -61,6 +73,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.PolyTest" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -99,7 +116,14 @@
       <option name="project" value="LOCAL‎" />
       <updated>1684861861942</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL‎-00005" summary="Polynomial, RationalPolynomial added. Tried to make polynomial operations like gcd, mod, div but doesn't work yet.">
+      <created>1685304571721</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL‎-00005" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1685304571721</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -130,7 +154,8 @@
     <MESSAGE value="the field thing does not work. However, created function to get the base of null space." />
     <MESSAGE value="Going to delete the last implementations of GMatirx and GVectors and go for a simpler approach" />
     <MESSAGE value="FMatrix, FVector, FieldElement all working!! They generalize the matrix and vector to work with all fields. From now working with FMatrix." />
-    <option name="LAST_COMMIT_MESSAGE" value="FMatrix, FVector, FieldElement all working!! They generalize the matrix and vector to work with all fields. From now working with FMatrix." />
+    <MESSAGE value="Polynomial, RationalPolynomial added. Tried to make polynomial operations like gcd, mod, div but doesn't work yet." />
+    <option name="LAST_COMMIT_MESSAGE" value="Polynomial, RationalPolynomial added. Tried to make polynomial operations like gcd, mod, div but doesn't work yet." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
