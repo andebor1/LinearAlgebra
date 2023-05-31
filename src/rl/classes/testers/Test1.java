@@ -2,11 +2,11 @@ package rl.classes.testers;
 
 import rl.classes.matrices.*;
 import rl.classes.types.Polynomial;
-import rl.classes.types.fields.Rational;
-import rl.classes.types.fields.RationalPolynomial;
-import rl.classes.types.fields.Real;
+import rl.classes.types.fields.*;
 import rl.classes.vectors.*;
+import rl.useable.BigIntOperations;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 public class Test1 {
@@ -45,9 +45,9 @@ public class Test1 {
     }
 
     private static void testField() {
-        FVector v1 = new FVector(Rational.convertList(20, 213, 3, 412));
-        FVector v2 = new FVector(Rational.convertList(7, 12, 34, 413));
-        FVector v3 = new FVector(Rational.convertList(8, -3, -134, 13));
+        FVector v1 = new FVector(BigInt.toRational(20, 200, 3, 1));
+        FVector v2 = new FVector(BigInt.toRational(7, 12, 3, 5));
+        FVector v3 = new FVector(BigInt.toRational(8, -3, -30, 2));
 
         FMatrix mat = FVector.toMatrix(v1, v2, v3, v1);
 

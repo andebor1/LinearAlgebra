@@ -28,7 +28,6 @@ public class PolyOperations implements FractionsOperations {
     }
 
     public static Polynomial polyGCD(Polynomial p1, Polynomial p2) {
-        System.out.println(p1 + "    " + p2);
         if (p2.isZero()) {
             return p1;
         }

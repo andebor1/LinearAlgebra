@@ -4,8 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="Fixed polynomial operations (I hope), added more general Rational field, added class for gcd, div operations for the generalized rational to work more efficiently.">
+    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="Fixed GRationals class">
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/BigInt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/rings/RingElement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/useable/BigIntOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/PolyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/PolyTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/FieldElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/FieldElement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/GRational.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/GRational.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/useable/EmptyOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/useable/EmptyOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/useable/Numeric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/useable/Numeric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/useable/PolyOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/useable/PolyOperations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +133,14 @@
       <option name="project" value="LOCAL‎" />
       <updated>1685474831178</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL‎-00007" summary="Fixed GRationals class">
+      <created>1685475360119</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL‎-00007" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1685475360119</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -155,17 +173,7 @@
     <MESSAGE value="FMatrix, FVector, FieldElement all working!! They generalize the matrix and vector to work with all fields. From now working with FMatrix." />
     <MESSAGE value="Polynomial, RationalPolynomial added. Tried to make polynomial operations like gcd, mod, div but doesn't work yet." />
     <MESSAGE value="Fixed polynomial operations (I hope), added more general Rational field, added class for gcd, div operations for the generalized rational to work more efficiently." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed polynomial operations (I hope), added more general Rational field, added class for gcd, div operations for the generalized rational to work more efficiently." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java</url>
-          <line>543</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Fixed GRationals class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed GRationals class" />
   </component>
 </project>

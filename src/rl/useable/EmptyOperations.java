@@ -11,11 +11,11 @@ public class EmptyOperations implements FractionsOperations {
 
     @Override
     public FieldElement gcd(FieldElement element1, FieldElement element2) {
-        return null;
+        return element1.unit();
     }
 
     @Override
     public FieldElement div(FieldElement element1, FieldElement element2) {
-        return null;
+        return element1.zero();
     }
 }

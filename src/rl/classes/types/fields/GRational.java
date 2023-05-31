@@ -2,23 +2,36 @@ package rl.classes.types.fields;
 
 import rl.useable.*;
 
-public record GRational(FieldElement numerator, FieldElement denominator) implements FieldElement{
+public class GRational implements FieldElement{
 
-    public static GRational create(FieldElement numerator, FieldElement denominator, FractionsOperations op) {
+    public final FieldElement numerator;
+    public final FieldElement denominator;
+    FractionsOperations op = new EmptyOperations();
+
+    public GRational(FieldElement numerator, FieldElement denominator, FractionsOperations op) {
         if (denominator.isZero()) {
             throw new IllegalArgumentException("Can't have zero in the denominator!");
         }
 
         FieldElement q = op.gcd(numerator, denominator);
 
-        return new GRational(op.div(numerator, q), op.div(denominator, q));
+        this.numerator = op.div(numerator, q);
+        this.denominator = op.div(denominator, q);
+        this.op = op;
     }
 
-    public GRational {
+    public GRational(FieldElement numerator, FieldElement denominator) {
         if (denominator.isZero()) {
             throw new IllegalArgumentException("Can't have zero in the denominator!");
         }
 
+        this.numerator = numerator;
+        this.denominator = denominator;
+    }
+
+    public GRational(FieldElement r, FractionsOperations op) {
+        this(r);
+        this.op = op;
     }
 
 
@@ -37,18 +50,18 @@ public record GRational(FieldElement numerator, FieldElement denominator) implem
 
     @Override
     public FieldElement unit() {
-        return new GRational(this.numerator.unit());
+        return new GRational(this.numerator.unit(), op);
     }
 
     @Override
     public FieldElement zero() {
-        return new GRational(this.numerator.zero());
+        return new GRational(this.numerator.zero(), op);
     }
 
     @Override
     public FieldElement add(FieldElement other) {
         GRational rOther = getRationalValue(other);
-        return new GRational(this.numerator.mul(rOther.denominator).add(rOther.numerator.mul(this.denominator)), this.denominator.mul(rOther.denominator));
+        return new GRational(this.numerator.mul(rOther.denominator).add(rOther.numerator.mul(this.denominator)), this.denominator.mul(rOther.denominator), op);
     }
 
     @Override
@@ -59,7 +72,7 @@ public record GRational(FieldElement numerator, FieldElement denominator) implem
     @Override
     public FieldElement mul(FieldElement other) {
         GRational rOther = getRationalValue(other);
-        return new GRational(this.numerator.mul(rOther.numerator), this.denominator.mul(rOther.denominator));
+        return new GRational(this.numerator.mul(rOther.numerator), this.denominator.mul(rOther.denominator), op);
     }
 
     @Override
@@ -67,12 +80,12 @@ public record GRational(FieldElement numerator, FieldElement denominator) implem
         if (this.numerator.isZero()) {
             return zero();
         }
-        return new GRational(this.denominator, this.numerator);
+        return new GRational(this.denominator, this.numerator, op);
     }
 
     @Override
     public FieldElement neg() {
-        return new GRational(this.numerator.neg(), this.denominator);
+        return new GRational(this.numerator.neg(), this.denominator, op);
     }
 
     @Override
@@ -95,7 +108,7 @@ public record GRational(FieldElement numerator, FieldElement denominator) implem
         GRational[] arr = new GRational[n];
 
         for (int i=0; i<n; i++) {
-            arr[i] = new GRational(elements[i]);
+            arr[i] = new GRational(elements[i], new BigIntOperations());
         }
 
         return arr;

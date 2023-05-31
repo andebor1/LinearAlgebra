@@ -1,6 +1,7 @@
 package rl.classes.testers;
 
 import rl.classes.types.*;
+import rl.classes.types.fields.GRational;
 import rl.classes.types.fields.RationalPolynomial;
 import rl.classes.types.fields.Real;
 import rl.useable.*;
@@ -23,7 +24,8 @@ public class PolyTest {
     public static void test2() {
         Polynomial p1 = new Polynomial(Real.convertList(1, 1));
         RationalPolynomial q = new RationalPolynomial(p1, p1);
+        GRational p = new GRational(q);
 
-        System.out.println(q);
+        System.out.println(p);
     }
 }

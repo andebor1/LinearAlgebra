@@ -377,7 +377,6 @@ public class FMatrix {
         int currRow = 0;
         FieldElement det = unit;
         for (int j=0; j<endCol; j++) {
-            System.out.println(this);
             int row = nonZeroIndexInColumn(currRow, j);
             if (row == -1) continue;
 
@@ -493,7 +492,7 @@ public class FMatrix {
         int r = eliminated.getRank();
         HashSet<Integer> pivotIndexes = new HashSet<>();
 
-        for (int i=0; i<r; i++) {
+        for (int i=0; i<n; i++) {
             FieldElement[] row = eliminated.getRow(i + 1).vec;
             for (int j=0; j<n; j++) {
                 if (row[j].equals(unit)) {
@@ -514,7 +513,7 @@ public class FMatrix {
             baseVector[curr] = unit;
             for (int j=0; j<curr; j++) {
                 if (pivotIndexes.contains(j)) {
-                    baseVector[j] = this.mat[j][curr].neg();
+                    baseVector[j] = eliminated.mat[j][curr].neg();
                 } else {
                     baseVector[j] = unit.zero();
                 }
