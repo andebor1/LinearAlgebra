@@ -9,6 +9,9 @@ public interface FieldElement {
     }
     FieldElement mul(FieldElement other);
     FieldElement inverse();
+    default FieldElement divide(FieldElement other) {
+        return this.mul(other.inverse());
+    }
     FieldElement neg();
     boolean equals(FieldElement other);
     boolean isZero();

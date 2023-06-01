@@ -9,7 +9,7 @@ import rl.useable.*;
 public class PolyTest {
 
     public static void main(String[] args) {
-        test2();
+        test3();
     }
 
     public static void test1() {
@@ -27,5 +27,10 @@ public class PolyTest {
         GRational p = new GRational(q);
 
         System.out.println(p);
+    }
+
+    public static void test3() {
+        Polynomial p1 = new Polynomial(Real.convertList(4, 4, 1));
+        System.out.println(p1);
     }
 }

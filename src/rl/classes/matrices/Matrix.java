@@ -1,17 +1,23 @@
 package rl.classes.matrices;
 
+import rl.classes.types.Polynomial;
+import rl.classes.types.fields.RationalPolynomial;
+import rl.classes.types.fields.Real;
 import rl.classes.vectors.Vector;
+import rl.classes.types.fields.FieldElement;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
 public class Matrix {
 
-    private final double[][] mat;
+    private final FieldElement[][] mat;
+    private final FieldElement unit;
     public final int rows;
     public final int columns;
+    public Integer rank=null;
 
-    public Matrix(double[][] mat) {
+    public Matrix(FieldElement[][] mat) {
         this.mat = mat;
         this.rows = mat.length;
 
@@ -19,17 +25,40 @@ public class Matrix {
             this.columns = mat[0].length;
         else
             this.columns = 0;
+
+        this.unit = mat[0][0].unit();
     }
 
-    public static Matrix unit(int n) {
-        double[][] newMat = new double[n][n];
+    public static Matrix newMatrix(int size, FieldElement... elements) {
+        if (elements.length != size*size) {
+            throw new IllegalArgumentException("matrix size is " + size*size);
+        }
+
+        FieldElement[][] mat = new FieldElement[size][size];
+        for (int i=0; i<size; i++) {
+            System.arraycopy(elements, size * i, mat[i], size*(i+1), size);
+        }
+
+        return new Matrix(mat);
+    }
+
+    public Matrix(double[][] mat) {
+        this(Real.convertMatrix(mat));
+    }
+
+    public static Matrix newMatrix(int size, double... elements) {
+        return Matrix.newMatrix(size, Real.convertList(elements));
+    }
+
+    public static Matrix unit(int n, FieldElement unit) {
+        FieldElement[][] newMat = new FieldElement[n][n];
 
         for (int i=0; i<n; i++) {
             for (int j=0; j<n; j++) {
                 if (i==j) {
-                    newMat[i][j] = 1;
+                    newMat[i][j] = unit;
                 } else {
-                    newMat[i][j] = 0;
+                    newMat[i][j] = unit.zero();
                 }
             }
         }
@@ -51,15 +80,15 @@ public class Matrix {
         StringBuilder out = new StringBuilder();
 
         for (int i=1; i<=rows; i++) {
-            out.append(getRow(i));
+            out.append(Arrays.toString(getRow(i).vec));
             out.append("\n");
         }
 
         return out.toString();
     }
 
-    public double[][] getMat() {
-        double[][] res = new double[rows][];
+    public FieldElement[][] getMat() {
+        FieldElement[][] res = new FieldElement[rows][];
 
         for (int i=0; i<rows; i++) {
             res[i] = getRow(i+1).vec;
@@ -96,11 +125,11 @@ public class Matrix {
      * @post $ret.mat[i][j] == this.mat[i][j] + B.mat[i][j] for all i, j
      */
     public Matrix add(Matrix B) {
-        double[][] newMat = new double[rows][columns];
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
-                newMat[i][j] = mat[i][j] + B.mat[i][j];
+                newMat[i][j] = mat[i][j].add(B.mat[i][j]);
             }
         }
 
@@ -114,11 +143,11 @@ public class Matrix {
      * @post $ret.mat[i][j] == this.mat[i][j] - B.mat[i][j] for all i, j
      */
     public Matrix sub(Matrix B) {
-        double[][] newMat = new double[rows][columns];
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
-                newMat[i][j] = mat[i][j] - B.mat[i][j];
+                newMat[i][j] = mat[i][j].sub(B.mat[i][j]);
             }
         }
 
@@ -129,12 +158,12 @@ public class Matrix {
      *
      * @post $ret.mat[i][j] == c*this.mat[i][j] for all i,j
      */
-    public Matrix scalarMul(double c) {
-        double[][] newMat = new double[rows][columns];
+    public Matrix scalarMul(FieldElement c) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i = 0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
-                newMat[i][j] = c*mat[i][j];
+                newMat[i][j] = c.mul(mat[i][j]);
             }
         }
 
@@ -148,13 +177,7 @@ public class Matrix {
      * @post $ret.equals(this.mat[i-1])
      */
     public Vector getRow(int i) {
-        double[] row = new double[this.columns];
-
-        for (int j=0; j<this.columns; j++) {
-            row[j] = this.mat[i - 1][j];
-        }
-
-        return new Vector(row);
+        return new Vector(Arrays.copyOf(mat[i-1], columns));
     }
 
     /**
@@ -164,7 +187,7 @@ public class Matrix {
      * @post $ret[i] == this.mat[i][j - 1] for all 0<=i<this.rows
      */
     public Vector getCol(int j) {
-        double[] col = new double[this.rows];
+        FieldElement[] col = new FieldElement[this.rows];
 
         for (int i=0; i<this.rows; i++) {
             col[i] = this.mat[i][j - 1];
@@ -180,7 +203,7 @@ public class Matrix {
      * @post $ret = this.mat * B.mat (matrix multiplication)
      */
     public Matrix multiply(Matrix B) {
-        double[][] newMat = new double[this.rows][B.columns];
+        FieldElement[][] newMat = new FieldElement[this.rows][B.columns];
 
         for (int i=0; i<this.rows; i++) {
             for (int j=0; j<B.columns; j++) {
@@ -198,7 +221,7 @@ public class Matrix {
      * @post $ret == this to the power of k
      */
     public Matrix pow(int k) {
-        Matrix newMatrix = Matrix.unit(this.rows);
+        Matrix newMatrix = Matrix.unit(this.rows, this.unit);
 
         for (int i=0; i<k; i++) {
             newMatrix = newMatrix.multiply(this);
@@ -207,8 +230,16 @@ public class Matrix {
         return newMatrix;
     }
 
+    public Matrix addVector(Vector vector) {
+        Vector[] vec = this.getVectors();
+        Vector[] newVectors = Arrays.copyOf(vec, vec.length + 1);
+        newVectors[vec.length] = vector;
+
+        return Vector.toMatrix(newVectors);
+    }
+
     public Vector mulVec(Vector v) {
-        double[] newVec = new double[this.rows];
+        FieldElement[] newVec = new FieldElement[this.rows];
 
         for (int i=0; i<rows;i++) {
             newVec[i] = v.dot(this.mat[i]);
@@ -217,7 +248,7 @@ public class Matrix {
         return new Vector(newVec);
     }
 
-    public Vector mulVec(double... vec) {
+    public Vector mulVec(FieldElement... vec) {
         Vector v = new Vector(vec);
         return this.mulVec(v);
     }
@@ -227,7 +258,7 @@ public class Matrix {
      * @post $ret.mat[j][i] = this.mat[i][j] for all i, j
      */
     public Matrix transpose() {
-        double[][] newMat = new double[columns][rows];
+        FieldElement[][] newMat = new FieldElement[columns][rows];
 
         for (int j=0; j<columns; j++) {
             for (int i=0; i<rows; i++) {
@@ -245,7 +276,7 @@ public class Matrix {
      * replaces rows l-1, k-1
      */
     public Matrix P(int k, int l) {
-        double[][] newMat = new double[rows][columns];
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
@@ -269,13 +300,13 @@ public class Matrix {
      * @post for all j for all 0<=i<this.rows: i == k @implies $ret.mat[i][j] == a*this.mat[i][j]
      *                                          else: $ret.mat[i][j] == this.mat[i][j]
      */
-    public Matrix PM(int k, double a) {
-        double[][] newMat = new double[rows][columns];
+    public Matrix PM(int k, FieldElement a) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
                 if (i == k-1) {
-                    newMat[i][j] = a*mat[i][j];
+                    newMat[i][j] = a.mul(mat[i][j]);
                 } else {
                     newMat[i][j] = mat[i][j];
                 }
@@ -291,13 +322,13 @@ public class Matrix {
      * @post for all j for all 0<=i<this.rows: i == k-1 @implies $ret.mat[i][j] == this.mat[i][j] + a*this.mat[l-1][j]
      *                                          else: $ret.mat[i][j] == a*this.mat[i][j]
      */
-    public Matrix PA(int l, int k, double a) {
-        double[][] newMat = new double[rows][columns];
+    public Matrix PA(int l, int k, FieldElement a) {
+        FieldElement[][] newMat = new FieldElement[rows][columns];
 
         for (int i=0; i<rows; i++) {
             for (int j=0; j<columns; j++) {
                 if (i == k-1) {
-                    newMat[i][j] = mat[i][j] + a*mat[l-1][j];
+                    newMat[i][j] = mat[i][j].add(a.mul(mat[l-1][j]));
                 } else {
                     newMat[i][j] = mat[i][j];
                 }
@@ -313,7 +344,7 @@ public class Matrix {
      * replaces rows l, k
      */
     private void _P(int k, int l) {
-        double[] tmp = this.mat[k];
+        FieldElement[] tmp = this.mat[k];
         this.mat[k] = this.mat[l];
         this.mat[l] = tmp;
     }
@@ -325,9 +356,9 @@ public class Matrix {
      * @post for all j for all 0<=i<this.rows: i == k @implies this.mat[i][j] == a*($post)this.mat[i][j]
      *                                          else: this.mat[i][j] == ($post)this.mat[i][j]
      */
-    private void _PM(int k, double a) {
+    private void _PM(int k, FieldElement a) {
         for (int j=0; j<columns; j++) {
-            this.mat[k][j] = a*this.mat[k][j];
+            this.mat[k][j] = a.mul(this.mat[k][j]);
         }
     }
 
@@ -338,9 +369,9 @@ public class Matrix {
      * @post for all j for all 0<=i<this.rows: i == k @implies $ret.mat[i][j] == this.mat[i][j] + a*this.mat[l][j]
      *                                          else: $ret.mat[i][j] == a*this.mat[i][j]
      */
-    private void _PA(int l, int k, double a) {
+    private void _PA(int l, int k, FieldElement a) {
         for (int j=0; j<columns; j++) {
-            this.mat[k][j] = this.mat[k][j] + a*this.mat[l][j];
+            this.mat[k][j] = this.mat[k][j].add(a.mul(this.mat[l][j]));
         }
     }
 
@@ -350,19 +381,8 @@ public class Matrix {
      * @post $ret < 0 @implies this.mat[$ret][j] != 0
      */
     private int nonZeroIndexInColumn(int from, int j) {
-        return nonZeroIndexInColumn(from, j, false);
-    }
-
-    /**
-     *
-     * @post $ret == -1 @implies for all i, Math.abs(this.mat[j][i]) < e
-     * @post $ret < 0 @implies Math.abs(this.mat[$ret][j]) > e
-     */
-    private int nonZeroIndexInColumn(int from, int j, boolean approx) {
-        double e = 0.000001;
-
         for (int i=from; i<rows; i++) {
-            if (Math.abs(this.mat[i][j]) > e) {
+            if (!this.mat[i][j].isZero()) {
                 return i;
             }
         }
@@ -378,30 +398,26 @@ public class Matrix {
         this.selfGaussElimination(endCol, false);
     }
 
-    private void selfGaussElimination(int endCol, boolean approx) {
-        this.selfGaussElimination(endCol, approx, false);
-    }
-
-    private double selfGaussElimination(int endCol, boolean approx, boolean calcDet) {
+    private FieldElement selfGaussElimination(int endCol, boolean calcDet) {
         int currRow = 0;
-        double det = 1;
+        FieldElement det = unit;
         for (int j=0; j<endCol; j++) {
-            int row = nonZeroIndexInColumn(currRow, j, approx);
+            int row = nonZeroIndexInColumn(currRow, j);
             if (row == -1) continue;
 
             this._P(currRow, row);
 
             if (calcDet) {
-                det *= row == currRow ? 1 : -1;
-                det *= this.mat[currRow][j];
+                det = det.mul(row == currRow ? unit : unit.neg());
+                det = det.mul(this.mat[currRow][j]);
             }
 
-            this._PM(currRow, 1/this.mat[currRow][j]);
+            this._PM(currRow, this.mat[currRow][j].inverse());
 
             for (int i=0; i<rows; i++) {
                 if (i == currRow) continue;
 
-                double c = - this.mat[i][j];
+                FieldElement c = this.mat[i][j].neg();
                 this._PA(currRow, i, c);
             }
             currRow++;
@@ -420,9 +436,9 @@ public class Matrix {
         return newMatrix;
     }
 
-    public double det() {
+    public FieldElement det() {
         Matrix copy = this.copy();
-        return copy.selfGaussElimination(columns, true, true);
+        return copy.selfGaussElimination(columns, true);
     }
 
     public Vector[] getVectors() {
@@ -444,7 +460,7 @@ public class Matrix {
      */
     public Matrix inverse() {
         Vector[] thisVectors = this.getVectors();
-        Vector[] unitVectors = Matrix.unit(this.rows).getVectors();
+        Vector[] unitVectors = Matrix.unit(this.rows, unit).getVectors();
 
         Vector[] vectors = new Vector[this.rows*2];
 
@@ -457,8 +473,8 @@ public class Matrix {
 
         Matrix toEliminate = Vector.toMatrix(vectors);
 
-        if (toEliminate.selfGaussElimination(rows, false, true) == 0)
-            return this;
+        if (toEliminate.selfGaussElimination(rows, true).isZero())
+            return null;
 
         Vector[] newVectors = toEliminate.getVectors();
         Vector[] inverseVectors = Arrays.copyOfRange(newVectors, rows, 2*rows);
@@ -467,7 +483,7 @@ public class Matrix {
     }
 
     public Matrix minor(int k, int l) {
-        double[][] newMat = new double[rows - 1][columns - 1];
+        FieldElement[][] newMat = new FieldElement[rows - 1][columns - 1];
 
         for (int i=0; i<rows - 1; i++) {
             for (int j=0; j<columns - 1; j++) {
@@ -482,6 +498,10 @@ public class Matrix {
     }
 
     public int getRank() {
+        if (this.rank != null) {
+            return rank;
+        }
+
         Matrix eliminated = this.gaussElimination();
 
         int rank = 0;
@@ -491,6 +511,7 @@ public class Matrix {
             }
         }
 
+        this.rank = rank;
         return rank;
     }
 
@@ -501,10 +522,10 @@ public class Matrix {
         int r = eliminated.getRank();
         HashSet<Integer> pivotIndexes = new HashSet<>();
 
-        for (int i=0; i<r; i++) {
-            double[] row = eliminated.getRow(i + 1).vec;
+        for (int i=0; i<n; i++) {
+            FieldElement[] row = eliminated.getRow(i + 1).vec;
             for (int j=0; j<n; j++) {
-                if (row[j] == 1) {
+                if (row[j].equals(unit)) {
                     pivotIndexes.add(j);
                     break;
                 }
@@ -518,13 +539,13 @@ public class Matrix {
                 curr++;
             }
 
-            double[] baseVector = new double[n];
-            baseVector[curr] = 1;
+            FieldElement[] baseVector = new FieldElement[n];
+            baseVector[curr] = unit;
             for (int j=0; j<curr; j++) {
                 if (pivotIndexes.contains(j)) {
-                    baseVector[j] = -this.mat[j][curr];
+                    baseVector[j] = eliminated.mat[j][curr].neg();
                 } else {
-                    baseVector[j] = 0;
+                    baseVector[j] = unit.zero();
                 }
             }
 
@@ -532,5 +553,54 @@ public class Matrix {
         }
 
         return base;
+    }
+
+    public RationalPolynomial characteristicPolynomial() {
+        FieldElement[][] mat = this.getMat();
+
+        int n = this.rows;
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n; j++) {
+                if (i == j) {
+                    mat[i][j] = new RationalPolynomial(new Polynomial(mat[i][j].neg(), unit));
+                } else {
+                    mat[i][j] = new RationalPolynomial(new Polynomial(mat[i][j]));
+                }
+            }
+        }
+
+        Matrix polMatrix = new Matrix(mat);
+        return (RationalPolynomial) polMatrix.det();
+    }
+
+    public boolean independentVectors() {
+        return this.getRank() == this.columns;
+    }
+
+    public boolean creatingVectors() {
+        return this.getRank() == this.rows;
+    }
+
+    public boolean invertable() {
+        return this.rows == this.columns && this.getRank() == this.rows;
+    }
+
+    /**
+     *
+     * @pre b.vec.length == mat.rows
+     * @pre b.dependent(this.getVectors())
+     *
+     * @post mat.mulVec($ret).equals(b)
+     */
+    public Vector findSolution(Vector b) {
+        Matrix matWithB = this.addVector(b);
+
+        matWithB.selfGaussElimination(this.columns);
+        Vector sol = matWithB.getCol(this.columns + 1).copyOf(this.columns);
+        if (this.mulVec(sol).equals(b)) {
+            return sol;
+        }
+
+        return null;
     }
 }

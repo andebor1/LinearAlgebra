@@ -4,19 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="Fixed GRationals class">
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/BigInt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/rings/RingElement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rl/useable/BigIntOperations.java" afterDir="false" />
+    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="Fixed bugs and made nullSpaceBase work. Tried to add logic using Rings, but didn't go well...">
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/testers/VectorsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/DMatrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/PolyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/PolyTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/FieldElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/FieldElement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/GRational.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/GRational.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/useable/EmptyOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/useable/EmptyOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/useable/Numeric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/useable/Numeric.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/useable/PolyOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/useable/PolyOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/Real.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Real.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/vectors/FVector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/vectors/DVector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/vectors/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/vectors/Vector.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,11 +26,21 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2ProQCdHHNC1m3HSo0WmyBO7IAl" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -44,18 +52,34 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Dell/Desktop/projects/java/IntelliJ-workspace/LinearAlgebra/src/rl/classes/types/Real.java&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.excludes&quot;
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Dell/Desktop/projects/odyssey/year_2/software1/software1-workspace/hw_7-andebor1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="rl.classes.testers" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="rl.classes.types.fields" />
       <recent name="rl.classes.matrices" />
       <recent name="rl.classes.types" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Test1">
+  <component name="RunManager" selected="Application.VectorsTest">
     <configuration name="PolyTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="rl.classes.testers.PolyTest" />
       <module name="LinearAlgebra" />
@@ -76,8 +100,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VectorsTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="rl.classes.testers.VectorsTest" />
+      <module name="LinearAlgebra" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="rl.classes.testers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.VectorsTest" />
         <item itemvalue="Application.PolyTest" />
       </list>
     </recent_temporary>
@@ -90,6 +128,14 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1684224545405</updated>
+      <workItem from="1685536585845" duration="63000" />
+      <workItem from="1685536660472" duration="223000" />
+      <workItem from="1685536899852" duration="100000" />
+      <workItem from="1685537013152" duration="256000" />
+      <workItem from="1685544871597" duration="368000" />
+      <workItem from="1685557274335" duration="5530000" />
+      <workItem from="1685608849737" duration="726000" />
+      <workItem from="1685612356797" duration="781000" />
     </task>
     <task id="LOCAL‎-00001" summary="commit before trying to get the field thing to work.">
       <created>1684611735965</created>
@@ -140,8 +186,18 @@
       <option name="project" value="LOCAL‎" />
       <updated>1685475360119</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL‎-00008" summary="Fixed bugs and made nullSpaceBase work. Tried to add logic using Rings, but didn't go well...">
+      <created>1685535321185</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL‎-00008" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1685535321185</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -174,6 +230,7 @@
     <MESSAGE value="Polynomial, RationalPolynomial added. Tried to make polynomial operations like gcd, mod, div but doesn't work yet." />
     <MESSAGE value="Fixed polynomial operations (I hope), added more general Rational field, added class for gcd, div operations for the generalized rational to work more efficiently." />
     <MESSAGE value="Fixed GRationals class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed GRationals class" />
+    <MESSAGE value="Fixed bugs and made nullSpaceBase work. Tried to add logic using Rings, but didn't go well..." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed bugs and made nullSpaceBase work. Tried to add logic using Rings, but didn't go well..." />
   </component>
 </project>

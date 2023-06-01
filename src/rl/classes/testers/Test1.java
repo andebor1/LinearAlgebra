@@ -1,13 +1,8 @@
 package rl.classes.testers;
 
 import rl.classes.matrices.*;
-import rl.classes.types.Polynomial;
 import rl.classes.types.fields.*;
 import rl.classes.vectors.*;
-import rl.useable.BigIntOperations;
-
-import java.math.BigInteger;
-import java.util.Arrays;
 
 public class Test1 {
     public static void main(String[] args) {
@@ -16,40 +11,40 @@ public class Test1 {
 
 
     public static void A8Q1() {
-        Matrix A = new Matrix(new double[][] {{6, -9, 5, 4}, {7, -13, 8, 7}, {8, -17, 11, 8}, {1, -2, 1, 3}});
-        Matrix mat2 = A.sub(Matrix.unit(4).scalarMul(2));
-        Matrix mat3 = A.sub(Matrix.unit(4).scalarMul(1));
-        Vector v1 = new Vector(3, 6, 7, 1);
-        Vector v2 = new Vector(2, 1, 0, 0);
-        Vector v3 = mat2.mulVec(v2); // new Vector(-1, 0, 4, 16);
-        Vector v4 = new Vector(-1, 0, 0, 1);
-        Matrix P = Vector.toMatrix(v1, v2, v3, v4);
-        Matrix P_inv = P.inverse();
-        Matrix J = new Matrix(new double[][] {{2, 0, 0, 0}, {1, 2, 0, 0}, {0, 0, -2, 0}, {0, 0, 1, -2}});
+        DMatrix A = new DMatrix(new double[][] {{6, -9, 5, 4}, {7, -13, 8, 7}, {8, -17, 11, 8}, {1, -2, 1, 3}});
+        DMatrix mat2 = A.sub(DMatrix.unit(4).scalarMul(2));
+        DMatrix mat3 = A.sub(DMatrix.unit(4).scalarMul(1));
+        DVector v1 = new DVector(3, 6, 7, 1);
+        DVector v2 = new DVector(2, 1, 0, 0);
+        DVector v3 = mat2.mulVec(v2); // new Vector(-1, 0, 4, 16);
+        DVector v4 = new DVector(-1, 0, 0, 1);
+        DMatrix P = DVector.toMatrix(v1, v2, v3, v4);
+        DMatrix P_inv = P.inverse();
+        DMatrix J = new DMatrix(new double[][] {{2, 0, 0, 0}, {1, 2, 0, 0}, {0, 0, -2, 0}, {0, 0, 1, -2}});
 
         System.out.println(P_inv.multiply(A).multiply(P));
     }
 
     public static void A8Q2() {
-        Matrix A = new Matrix(new double[][] {{2, 1, 2}, {-1, 0, -2}, {0, 0, 3}});
-        Matrix mat2 = A.sub(Matrix.unit(3).scalarMul(1));
-        Matrix mat3 = A.sub(Matrix.unit(3).scalarMul(3));
-        Vector v1 = new Vector(1, 1, 0);
-        Vector v2 = mat2.mulVec(v1);
-        Vector v3 = new Vector(1, -1, 1);
-        Matrix P = Vector.toMatrix(v1, v2, v3);
-        Matrix P_inv = P.inverse();
-        Matrix J = new Matrix(new double[][] {{2, 0, 0, 0}, {1, 2, 0, 0}, {0, 0, -2, 0}, {0, 0, 1, -2}});
+        DMatrix A = new DMatrix(new double[][] {{2, 1, 2}, {-1, 0, -2}, {0, 0, 3}});
+        DMatrix mat2 = A.sub(DMatrix.unit(3).scalarMul(1));
+        DMatrix mat3 = A.sub(DMatrix.unit(3).scalarMul(3));
+        DVector v1 = new DVector(1, 1, 0);
+        DVector v2 = mat2.mulVec(v1);
+        DVector v3 = new DVector(1, -1, 1);
+        DMatrix P = DVector.toMatrix(v1, v2, v3);
+        DMatrix P_inv = P.inverse();
+        DMatrix J = new DMatrix(new double[][] {{2, 0, 0, 0}, {1, 2, 0, 0}, {0, 0, -2, 0}, {0, 0, 1, -2}});
 
         System.out.println(A.pow(8));
     }
 
     private static void testField() {
-        FVector v1 = new FVector(BigInt.toRational(20, 200, 3, 1));
-        FVector v2 = new FVector(BigInt.toRational(7, 12, 3, 5));
-        FVector v3 = new FVector(BigInt.toRational(8, -3, -30, 2));
+        Vector v1 = new Vector(BigInt.toRational(20, 200, 3, 1));
+        Vector v2 = new Vector(BigInt.toRational(7, 12, 3, 5));
+        Vector v3 = new Vector(BigInt.toRational(8, -3, -30, 2));
 
-        FMatrix mat = FVector.toMatrix(v1, v2, v3, v1);
+        Matrix mat = Vector.toMatrix(v1, v2, v3, v1);
 
         System.out.println(mat.characteristicPolynomial());
     }

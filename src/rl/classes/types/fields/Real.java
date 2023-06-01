@@ -4,6 +4,7 @@ public class Real implements FieldElement {
     public static final Real zero = new Real(0);
     public static final Real unit = new Real(1);
 
+
     public Real unit() {
         return unit;
     }
@@ -73,5 +74,17 @@ public class Real implements FieldElement {
         }
 
         return r;
+    }
+
+    public static Real[][] convertMatrix(double[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+
+        Real[][] matrix = new Real[m][n];
+        for (int i=0; i<m; i++) {
+            matrix[i] = Real.convertList(mat[i]);
+        }
+
+        return matrix;
     }
 }
