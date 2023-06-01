@@ -1,5 +1,8 @@
 package rl.classes.types.fields;
 
+import rl.classes.matrices.Matrix;
+import rl.useable.RandomGenerator;
+
 public class Real implements FieldElement {
     public static final Real zero = new Real(0);
     public static final Real unit = new Real(1);
@@ -13,7 +16,7 @@ public class Real implements FieldElement {
         return zero;
     }
 
-    private double value;
+    private final double value;
 
     public Real(double value) {
         this.value = value;
@@ -62,7 +65,7 @@ public class Real implements FieldElement {
     }
 
     public String toString() {
-        return "" + this.value;
+        return String.valueOf(this.value);
     }
 
     public static Real[] convertList(double ... elements) {
@@ -78,7 +81,7 @@ public class Real implements FieldElement {
 
     public static Real[][] convertMatrix(double[][] mat) {
         int m = mat.length;
-        int n = mat[0].length;
+        int n = m == 0 ? 0 : mat[0].length;
 
         Real[][] matrix = new Real[m][n];
         for (int i=0; i<m; i++) {
@@ -86,5 +89,26 @@ public class Real implements FieldElement {
         }
 
         return matrix;
+    }
+
+    public static Matrix randomMatrix(int m, int n, double minVal, double maxVal) {
+        Real[][] matrix = new Real[m][n];
+
+        RandomGenerator rand = new RandomGenerator();
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                matrix[i][j] = new Real(rand.getDouble(minVal, maxVal));
+            }
+        }
+
+        return new Matrix(matrix);
+    }
+
+    public static Matrix randomMatrix(int m, int n, double bound) {
+        return randomMatrix(m, n, 0, bound);
+    }
+
+    public static Matrix randomMatrix(int m, int n) {
+        return randomMatrix(m, n, 1);
     }
 }

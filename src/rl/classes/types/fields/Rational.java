@@ -1,6 +1,9 @@
 package rl.classes.types.fields;
 
+import rl.classes.matrices.Matrix;
 import rl.useable.Numeric;
+import rl.useable.RandomGenerator;
+
 public record Rational(long numerator, long denominator) implements FieldElement{
 
     public static final Rational unit = new Rational(1, 1);
@@ -94,5 +97,18 @@ public record Rational(long numerator, long denominator) implements FieldElement
         }
 
         return arr;
+    }
+
+    public static Matrix randomIntMatrix(int m, int n, int minVal, int maxVal) {
+        Rational[][] matrix = new Rational[m][n];
+
+        RandomGenerator rand = new RandomGenerator();
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                matrix[i][j] = new Rational(rand.getInt(minVal, maxVal));
+            }
+        }
+
+        return new Matrix(matrix);
     }
 }

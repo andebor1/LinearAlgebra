@@ -15,6 +15,6 @@ public class VectorsTest {
         Vector v2 = new Vector(Rational.convertList(1, 0, 0));
         Vector v3 = new Vector(Rational.convertList(1, 1, 0));
 
-        System.out.println(Arrays.toString(Vector.orthogonalBase(v2, v3, v1)));
+        System.out.println(Arrays.toString(Vector.orthogonalForm(v2, v3, v1)));
     }
 }

@@ -4,16 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="Fixed bugs and made nullSpaceBase work. Tried to add logic using Rings, but didn't go well...">
-      <change afterPath="$PROJECT_DIR$/src/rl/classes/testers/VectorsTest.java" afterDir="false" />
+    <list default="true" id="d8edb6ff-a9ea-49b0-8d25-6b478bc8b753" name="Changes" comment="orthogonalBase function, some fixes, added default implementation of divide in FieldElement">
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/testers/MatrixTester.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Complex.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/useable/RandomGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rl/uses/A10.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/FMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/DMatrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/DMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/DMatrix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/matrices/Matrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/PolyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/PolyTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/Test1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/FieldElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/FieldElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/testers/VectorsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/testers/VectorsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/Rational.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Rational.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/types/fields/Real.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/types/fields/Real.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rl/classes/vectors/FVector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/vectors/DVector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rl/classes/vectors/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rl/classes/vectors/Vector.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,8 +26,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -79,7 +80,7 @@
       <recent name="rl.classes.types" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.VectorsTest">
+  <component name="RunManager">
     <configuration name="PolyTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="rl.classes.testers.PolyTest" />
       <module name="LinearAlgebra" />
@@ -135,7 +136,8 @@
       <workItem from="1685544871597" duration="368000" />
       <workItem from="1685557274335" duration="5530000" />
       <workItem from="1685608849737" duration="726000" />
-      <workItem from="1685612356797" duration="781000" />
+      <workItem from="1685612356797" duration="10063000" />
+      <workItem from="1685647959364" duration="5820000" />
     </task>
     <task id="LOCAL‎-00001" summary="commit before trying to get the field thing to work.">
       <created>1684611735965</created>
@@ -193,7 +195,14 @@
       <option name="project" value="LOCAL‎" />
       <updated>1685535321185</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL‎-00009" summary="orthogonalBase function, some fixes, added default implementation of divide in FieldElement">
+      <created>1685615505206</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL‎-00009" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1685615505206</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -231,6 +240,7 @@
     <MESSAGE value="Fixed polynomial operations (I hope), added more general Rational field, added class for gcd, div operations for the generalized rational to work more efficiently." />
     <MESSAGE value="Fixed GRationals class" />
     <MESSAGE value="Fixed bugs and made nullSpaceBase work. Tried to add logic using Rings, but didn't go well..." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed bugs and made nullSpaceBase work. Tried to add logic using Rings, but didn't go well..." />
+    <MESSAGE value="orthogonalBase function, some fixes, added default implementation of divide in FieldElement" />
+    <option name="LAST_COMMIT_MESSAGE" value="orthogonalBase function, some fixes, added default implementation of divide in FieldElement" />
   </component>
 </project>

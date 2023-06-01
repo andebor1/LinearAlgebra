@@ -26,7 +26,14 @@ public class Matrix {
         else
             this.columns = 0;
 
-        this.unit = mat[0][0].unit();
+        if (rows == 0 || columns == 0) {
+            this.unit = Real.unit;
+        } else
+            this.unit = mat[0][0].unit();
+    }
+
+    public Matrix(int m, int n) {
+        this(new double[m][n]);
     }
 
     public static Matrix newMatrix(int size, FieldElement... elements) {
@@ -36,7 +43,7 @@ public class Matrix {
 
         FieldElement[][] mat = new FieldElement[size][size];
         for (int i=0; i<size; i++) {
-            System.arraycopy(elements, size * i, mat[i], size*(i+1), size);
+            System.arraycopy(elements, size * i, mat[i], 0, size);
         }
 
         return new Matrix(mat);
@@ -85,6 +92,10 @@ public class Matrix {
         }
 
         return out.toString();
+    }
+
+    public void print() {
+        System.out.println(Vector.toString(this.getVectors()));
     }
 
     public FieldElement[][] getMat() {
@@ -515,22 +526,28 @@ public class Matrix {
         return rank;
     }
 
-    public Vector[] nullSpaceBase() {
-        int n = rows;
-        Matrix eliminated = this.gaussElimination();
+    public Integer[] getPivots() {
+        Integer[] pivots = new Integer[getRank()];
+        int last = 0;
 
-        int r = eliminated.getRank();
-        HashSet<Integer> pivotIndexes = new HashSet<>();
-
-        for (int i=0; i<n; i++) {
-            FieldElement[] row = eliminated.getRow(i + 1).vec;
-            for (int j=0; j<n; j++) {
-                if (row[j].equals(unit)) {
-                    pivotIndexes.add(j);
+        for (int i=0; i<rows; i++) {
+            for (int j=0; j<columns; j++) {
+                if (!mat[i][j].isZero()) {
+                    pivots[last++] = j;
                     break;
                 }
             }
         }
+
+        return pivots;
+    }
+
+    public Vector[] nullSpaceBase() {
+        int n = columns;
+        Matrix eliminated = this.gaussElimination();
+
+        int r = eliminated.getRank();
+        HashSet<Integer> pivotIndexes = new HashSet<>(Arrays.asList(eliminated.getPivots()));
 
         Vector[] base = new Vector[n - r];
         int curr=0;
@@ -541,12 +558,16 @@ public class Matrix {
 
             FieldElement[] baseVector = new FieldElement[n];
             baseVector[curr] = unit;
+            int currRow = 0;
             for (int j=0; j<curr; j++) {
                 if (pivotIndexes.contains(j)) {
-                    baseVector[j] = eliminated.mat[j][curr].neg();
+                    baseVector[j] = eliminated.mat[currRow++][curr].neg();
                 } else {
                     baseVector[j] = unit.zero();
                 }
+            }
+            for (int j=curr+1; j<n; j++) {
+                baseVector[j] = unit.zero();
             }
 
             base[i] = new Vector(baseVector);

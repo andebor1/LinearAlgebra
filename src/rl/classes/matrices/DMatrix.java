@@ -148,13 +148,7 @@ public class DMatrix {
      * @post $ret.equals(this.mat[i-1])
      */
     public DVector getRow(int i) {
-        double[] row = new double[this.columns];
-
-        for (int j=0; j<this.columns; j++) {
-            row[j] = this.mat[i - 1][j];
-        }
-
-        return new DVector(row);
+        return new DVector(Arrays.copyOf(this.mat[i - 1], this.columns));
     }
 
     /**

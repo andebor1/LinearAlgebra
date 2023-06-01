@@ -25,6 +25,16 @@ public class Vector {
         return out.toString();
     }
 
+    public static Vector e(int length, int index, FieldElement unit) {
+        FieldElement[] vec = new FieldElement[length];
+        for (int i=0; i<length; i++) {
+            vec[i] = unit.zero();
+        }
+
+        vec[index] = unit;
+        return new Vector(vec);
+    }
+
     public Vector add(Vector other) {
         if (this.len != other.len) {
             throw new IllegalArgumentException("Can't add vectors with different lengths");
@@ -96,6 +106,19 @@ public class Vector {
         return new Matrix(mat);
     }
 
+    public static Matrix toMatrixAsRows(Vector... vectors) {
+        int m = vectors.length;
+        if (m == 0) return new Matrix(new FieldElement[][] {});
+
+        int n = vectors[0].len;
+        FieldElement[][] mat = new FieldElement[m][n];
+        for (int i=0; i<m; i++) {
+            System.arraycopy(vectors[i].vec, 0, mat[i], 0, n);
+        }
+
+        return new Matrix(mat);
+    }
+
     public Vector mul(FieldElement c) {
         int n = vec.length;
         FieldElement[] newVec = new FieldElement[n];
@@ -130,9 +153,24 @@ public class Vector {
         return new Vector(newVec);
     }
 
-    public boolean dependent(Vector... vectors) {
-        Matrix mat = Vector.toMatrix(vectors).addVector(this);
-        return mat.getRank() < vectors.length + 1;
+    public static boolean dependent(Vector... vectors) {
+        Matrix mat = Vector.toMatrix(vectors);
+        return mat.getRank() < vectors.length;
+    }
+
+    public static Vector[] getIndependent(Vector... vectors) {
+        Matrix mat = Vector.toMatrix(vectors);
+        Matrix eliminated = mat.gaussElimination();
+        Integer[] pivots = eliminated.getPivots();
+
+        int r = eliminated.getRank();
+        Vector[] independentVectors = new Vector[r];
+
+        for (int i=0; i<r; i++) {
+            independentVectors[i] = vectors[pivots[i]];
+        }
+
+        return independentVectors;
     }
 
     public Vector writeInBase(Vector... vectors) {
@@ -144,7 +182,7 @@ public class Vector {
         return new Vector(Arrays.copyOf(this.vec, length));
     }
 
-    public static Vector[] orthogonalBase(Vector... vectors) {
+    public static Vector[] orthogonalForm(Vector... vectors) {
         int n = vectors.length;
         Vector[] newBase = new Vector[n];
         FieldElement[] normsSquare = new FieldElement[n];
@@ -161,5 +199,57 @@ public class Vector {
         }
 
         return newBase;
+    }
+
+    public static Vector[] orthogonalSpaceBaseGramVersion(Vector... vectors) {
+        int n = vectors.length;
+        int m = vectors[0].len;
+        Vector[] vectorsWithUnit = Arrays.copyOf(vectors, n + m);
+        FieldElement unit = vectors[0].vec[0].unit();
+
+        for (int i=0; i<m; i++) {
+            vectorsWithUnit[n + i] = Vector.e(m, i, unit);
+        }
+
+        Vector[] completeBase = Vector.getIndependent(vectorsWithUnit);
+        Vector[] orthogonalBase = Vector.orthogonalForm(completeBase);
+
+        return Arrays.copyOfRange(orthogonalBase, n, orthogonalBase.length);
+    }
+
+    public static Vector[] orthogonalSpaceBase(Vector... vectors) {
+        Matrix matrix = Vector.toMatrixAsRows(vectors);
+
+        return matrix.nullSpaceBase();
+    }
+
+    public static String toString(Vector... vectors) {
+        final String SEP = "    ";
+        int n = vectors.length;
+
+        if (n == 0) {
+            return "()";
+        }
+
+        int m = vectors[0].len;
+        String[][] stringValues = new String[m][n];
+        int maxLength = 0;
+
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                stringValues[i][j] = vectors[j].vec[i].toString();
+                maxLength = Math.max(maxLength, stringValues[i][j].length());
+            }
+        }
+
+        StringBuilder out = new StringBuilder();
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                out.append(String.format("%-" + maxLength + "s" + SEP, stringValues[i][j]));
+            }
+            out.append("\n");
+        }
+
+        return out.toString();
     }
 }
