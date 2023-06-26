@@ -1,13 +1,16 @@
 package rl.classes.matrices;
 
 import rl.classes.types.Polynomial;
+import rl.classes.types.fields.Rational;
 import rl.classes.types.fields.RationalPolynomial;
 import rl.classes.types.fields.Real;
 import rl.classes.vectors.Vector;
 import rl.classes.types.fields.FieldElement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class Matrix {
 
@@ -57,7 +60,7 @@ public class Matrix {
         return Matrix.newMatrix(size, Real.convertList(elements));
     }
 
-    public static Matrix unit(int n, FieldElement unit) {
+    public static Matrix scalarMatrix(int n, FieldElement unit) {
         FieldElement[][] newMat = new FieldElement[n][n];
 
         for (int i=0; i<n; i++) {
@@ -66,6 +69,28 @@ public class Matrix {
                     newMat[i][j] = unit;
                 } else {
                     newMat[i][j] = unit.zero();
+                }
+            }
+        }
+
+        return new Matrix(newMat);
+    }
+
+    public static Matrix diagonalMatrix(FieldElement... values) {
+        int n = values.length;
+        if (n == 0) {
+            return new Matrix(0, 0);
+        }
+
+        FieldElement[][] newMat = new FieldElement[n][n];
+        FieldElement zero = values[0].zero();
+
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n; j++) {
+                if (i==j) {
+                    newMat[i][j] = values[i];
+                } else {
+                    newMat[i][j] = zero;
                 }
             }
         }
@@ -232,7 +257,7 @@ public class Matrix {
      * @post $ret == this to the power of k
      */
     public Matrix pow(int k) {
-        Matrix newMatrix = Matrix.unit(this.rows, this.unit);
+        Matrix newMatrix = Matrix.scalarMatrix(this.rows, this.unit);
 
         for (int i=0; i<k; i++) {
             newMatrix = newMatrix.multiply(this);
@@ -471,7 +496,7 @@ public class Matrix {
      */
     public Matrix inverse() {
         Vector[] thisVectors = this.getVectors();
-        Vector[] unitVectors = Matrix.unit(this.rows, unit).getVectors();
+        Vector[] unitVectors = Matrix.scalarMatrix(this.rows, unit).getVectors();
 
         Vector[] vectors = new Vector[this.rows*2];
 
@@ -623,5 +648,56 @@ public class Matrix {
         }
 
         return null;
+    }
+
+    public boolean isDiagonal() {
+        for (int i=0; i<rows; i++) {
+            for (int j=0; j<columns; j++) {
+                if (i != j && !this.mat[i][j].isZero()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     *
+     * @pre eigenvalues are all of the eigenvalues of this, and this is diagonlizable
+     * @pre this.rows == this.columns
+     *
+     * @post $ret.multiply(this).multiply($ret.inverse())
+     */
+    public Vector[] findDiagonalizingBase(FieldElement... eigenvalues) {
+        Vector[] base = new Vector[rows];
+        int last = 0;
+
+        for (FieldElement value : eigenvalues) {
+            Vector[] valuePart = this.sub(Matrix.scalarMatrix(rows, value)).nullSpaceBase();
+
+            for (Vector vec : valuePart) {
+                base[last++] = vec;
+            }
+        }
+
+        if (last < rows) {
+            return null;
+        }
+        return base;
+    }
+
+    public Rational[] findEigenvaluesForRational(int origin, int bound) {
+        List<Rational> eigenvalues = new ArrayList<>();
+
+        for (int x=origin; x<bound; x++) {
+            Rational rationalValue = new Rational(x);
+            Vector[] nullSpace = this.sub(scalarMatrix(rows, rationalValue)).nullSpaceBase();
+            if (nullSpace.length > 0) {
+                eigenvalues.add(rationalValue);
+            }
+        }
+
+        return eigenvalues.toArray(new Rational[0]);
     }
 }

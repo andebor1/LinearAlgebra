@@ -23,6 +23,16 @@ public class Complex implements FieldElement {
         this.im = abs*Math.sin(theta);
     }
 
+    public static Complex[] convertList(double ... elements) {
+        int n = elements.length;
+        Complex[] converted = new Complex[n];
+        for (int i=0; i<n; i++) {
+            converted[i] = new Complex(elements[i], 0);
+        }
+
+        return converted;
+    }
+
     private Complex getValue(FieldElement other) {
         if (other instanceof Complex z) {
             return z;

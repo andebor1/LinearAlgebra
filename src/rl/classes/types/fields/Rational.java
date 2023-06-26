@@ -99,6 +99,17 @@ public record Rational(long numerator, long denominator) implements FieldElement
         return arr;
     }
 
+    public static Rational[] convertIntegerList(Integer... elements) {
+        int n = elements.length;
+        Rational[] arr = new Rational[n];
+
+        for (int i=0; i<n; i++) {
+            arr[i] = new Rational(elements[i]);
+        }
+
+        return arr;
+    }
+
     public static Matrix randomIntMatrix(int m, int n, int minVal, int maxVal) {
         Rational[][] matrix = new Rational[m][n];
 

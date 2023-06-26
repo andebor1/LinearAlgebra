@@ -1,4 +1,4 @@
-package rl.classes.testers;
+package rl.testers;
 
 import rl.classes.types.*;
 import rl.classes.types.fields.GRational;

@@ -3,10 +3,20 @@ package rl.useable;
 import java.util.Random;
 
 public class RandomGenerator {
+
+    public static final int RANDOMSEED = -1;
     Random random;
 
+    public RandomGenerator(int seed) {
+        if (seed == RANDOMSEED) {
+            this.random = new Random();
+        } else {
+            this.random = new Random(seed);
+        }
+    }
+
     public RandomGenerator() {
-        this.random = new Random();
+        this(RANDOMSEED);
     }
 
     public double getDouble(double minVal, double maxVal) {

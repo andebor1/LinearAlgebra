@@ -8,37 +8,28 @@ import java.util.Arrays;
 public class Numeric {
 
     public static int gcd(int m, int k) {
-        if (k < 0) {
-            return -gcd(m, -k);
-        }
-        if (m < 0) {
-            return gcd(-m, k);
-        }
-        if (k == 0) {
-            return m;
-        }
-        if (k > m) {
-            return gcd(k, m);
-        }
-
-        return gcd(k, m%k);
+        return (int) gcd(m, k, true);
     }
 
     public static long gcd(long m, long k) {
+        return gcd(m, k, false);
+    }
+
+    public static long gcd(long m, long k, boolean isInt) {
         if (k < 0) {
-            return -gcd(m, -k);
+            return -gcd(m, -k, isInt);
         }
         if (m < 0) {
-            return gcd(-m, k);
+            return gcd(-m, k, isInt);
         }
         if (k == 0) {
             return m;
         }
         if (k > m) {
-            return gcd(k, m);
+            return gcd(k, m, isInt);
         }
 
-        return gcd(k, m%k);
+        return (int) gcd(k, m%k, isInt);
     }
 
     public static Polynomial polyGCD(Polynomial p1, Polynomial p2) {

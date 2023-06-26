@@ -1,21 +1,63 @@
-package rl.classes.testers;
+package rl.testers;
 
 import rl.classes.matrices.Matrix;
 import rl.classes.vectors.Vector;
 import rl.classes.types.fields.*;
 
 public class MatrixTester {
-    static final boolean PRINT = false;
+    static final boolean PRINT = true;
     static boolean allWorked = true;
     static int testNum = 0;
+
     public static void main(String[] args) {
-        testCases1();
-        testCases2();
-        testCasesRandom(5000, 3, 3, 0, 10);
+        testRandomDiagonal(1000, 3, 0, 2);
 
         if (allWorked) {
             System.out.println("Passes all tests!! (" + testNum + ")");
         }
+    }
+
+    public static void testRandomDiagonal(int amount, int n, int origin, int bound) {
+        Matrix mat;
+        for (int i=0; i<amount; i++) {
+            mat = Rational.randomIntMatrix(n, n, origin, bound);
+            FieldElement[] eigenValues = mat.findEigenvaluesForRational(Math.min(0, origin*n), bound*n);
+            testDiagonalBase(mat, eigenValues);
+        }
+    }
+
+    public static void testDiagonalBase(Matrix matrix, FieldElement... eigenvalues) {
+        if (PRINT) {
+            System.out.println("Matrix:");
+            matrix.print();
+        }
+
+        Vector[] diagonalBase = matrix.findDiagonalizingBase(eigenvalues);
+        if (diagonalBase == null) {
+            return;
+        }
+        Matrix diagonalingMatrix = Vector.toMatrix(diagonalBase);
+
+        Matrix diagonalMatrix = diagonalingMatrix.multiply(matrix).multiply(matrix).multiply(diagonalingMatrix.inverse());
+        if (diagonalMatrix.isDiagonal()) {
+            testNum++;
+            if (PRINT) {
+                System.out.println("Passed test " + testNum +"!");
+            }
+        } else {
+            allWorked = false;
+            if (PRINT) {
+                System.out.println("It's not diagonal!!");
+                diagonalMatrix.print();
+                diagonalingMatrix.print();
+            }
+        }
+    }
+
+    public static void testNullSpace() {
+        testCases1();
+        testCases2();
+        testCasesRandom(5000, 3, 3, 0, 10);
     }
 
     public static void testCases1() {

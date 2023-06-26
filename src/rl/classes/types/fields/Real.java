@@ -4,6 +4,8 @@ import rl.classes.matrices.Matrix;
 import rl.useable.RandomGenerator;
 
 public class Real implements FieldElement {
+    public static final double ERROR = 0.00000001;
+
     public static final Real zero = new Real(0);
     public static final Real unit = new Real(1);
 
@@ -17,6 +19,10 @@ public class Real implements FieldElement {
     }
 
     private final double value;
+
+    public double getValue() {
+        return value;
+    }
 
     public Real(double value) {
         this.value = value;
@@ -61,7 +67,7 @@ public class Real implements FieldElement {
     }
 
     public boolean isZero() {
-        return this.value == 0;
+        return Math.abs(this.value) <= ERROR;
     }
 
     public String toString() {
